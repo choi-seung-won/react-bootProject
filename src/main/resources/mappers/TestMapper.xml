@@ -12,6 +12,6 @@
       , userflag
       FROM
       react.react_user
-      WHERE useremail = #{Useremail}
+      WHERE useremail = #{Useremail} 
   </select>
 </mapper>

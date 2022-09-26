@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.backend.mapper.MapperInterface">
+<select id = "submitLogin" resultType = "com.project.backend.DTO.UserDTO">
+    select * from react.react_user where useremail = #{useremail}
+</select>
+</mapper>
