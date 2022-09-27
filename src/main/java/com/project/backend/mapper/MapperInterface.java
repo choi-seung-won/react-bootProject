@@ -8,5 +8,10 @@ public interface MapperInterface {
     public UserDTO MappingTest(String useremail) throws Exception;
 
     public UserDTO submitLogin(String useremail) throws Exception;
+
+    public UserDTO verifyLogin(String useremail) throws Exception;
+
+    public UserDTO insertUser(UserDTO userdto) throws Exception;
+
     
  }

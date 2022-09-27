@@ -6,8 +6,12 @@ import {Route} from "react-router-dom";
 import cookie from 'react-cookies';
 import axois from "axios";
 
+
 //TestPage
 import TestPage from './TestPage';
+//LoginPage
+import LoginPage from './LoginPage';
+
 
 class App extends Component {
 constructor(props){
@@ -26,6 +30,7 @@ render () {
   return (
     <div className="App">
               <Route path='/Test' component={TestPage} />
+              <Route path='/login' component={LoginPage} />
       <header className="App-header">
         
         
