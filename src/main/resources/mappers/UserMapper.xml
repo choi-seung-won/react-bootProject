@@ -43,5 +43,9 @@ INSERT INTO react.react_user
       react.react_user
       WHERE useremail = #{is_Email}
   </select>
+
+  <select id="checkUniqueEmail" resultType="int">
+    select count(*) from react.react_user where useremail=#{useremail}
+  </select>
   
 </mapper>

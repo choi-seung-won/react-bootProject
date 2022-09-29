@@ -11,18 +11,23 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.backend.BcryptService;
 import com.project.backend.DTO.UserDTO;
 import com.project.backend.mapper.MapperInterface;
 import org.springframework.web.bind.annotation.RequestParam;
 
+//jackson-databind는 boot의경우 spring-boot-starter-web에포함되어있음.
 
 @RestController
 public class UserController {
@@ -74,22 +79,84 @@ public class UserController {
         return entity;
     }
 
-    @RequestMapping(value="/Register", method=RequestMethod.POST)
-    public ResponseEntity<String> UserRegister(@RequestBody UserDTO userDTO) {
-        mapper.insertUser(userDTO);
+    @RequestMapping(value="/register", method=RequestMethod.POST)
+    public ResponseEntity<?> UserRegister(@RequestBody JSONObject registerInfo) throws JsonMappingException, JsonProcessingException {
+       
+        ResponseEntity<?> entity;
+
+        try {
+            mapper.insertUser(registerInfo);
+            System.out.println("mightbeokay");
+            return entity = new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        /*
+
+        if(registerInfo != null){
+
+            String is_Userphone1 = registerInfo.get("is_userphone1").toString();
+
+            String is_Userphone2 = registerInfo.get("is_Userphone2").toString();
+            
+            String is_Userphone3 = registerInfo.get("is_Userphone3").toString();
+
+            String userphone = is_Userphone1 + '-' + is_Userphone2 + '-' + is_Userphone3;
+            
+            System.out.println(userphone);
+
+        } */
+
+        //UserDTO userdto = objmapper.convertValue(registerInfo, UserDTO.class);
+
+        //System.out.println(userdto.toString());
+
+        //    System.out.println("temp" + userdto.toString());
+
+
+        /* try {
+            mapper.insertUser(userDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } */
         
         
-
-        return void;
-
+        
+        
     }
-
+    
     @RequestMapping(value="/dplicheck",method = RequestMethod.POST)
-    public ResponseEntity DuplicationCheck(@RequestBody UserDTO userdto){
+    public ResponseEntity<?> DuplicationCheck(@RequestBody Map<String,String> dplicheckInfo){
         
-        
-        return null;
+        ResponseEntity<String> entity = null;
 
+        String Email = dplicheckInfo.get("is_Email");
+        ObjectMapper objmapper = new ObjectMapper();
+        try {
+            String userEmail = objmapper.writeValueAsString(Email);
+            userEmail = userEmail.replace("\"", "");
+            
+            //null값return이 예상될경우 sqlquery단에서 value를int로받아 boolean검증
+            if(mapper.checkUniqueEmail(userEmail)==0){
+                System.out.println("unique");
+                entity = new ResponseEntity<String>("unique",HttpStatus.OK);
+                //401
+            }else{
+                System.out.println("duplicated");
+                return entity = new ResponseEntity<String>("duplicat-ed",HttpStatus.UNAUTHORIZED);
+            }
+        }
+        catch (NullPointerException npe) {
+            npe.printStackTrace();
+            entity = new ResponseEntity<String>("nullpointerException",HttpStatus.BAD_REQUEST);
+            
+        } catch(Exception e){
+            e.printStackTrace();
+            entity = new ResponseEntity<>("Exception",HttpStatus.BAD_REQUEST);
+        }        
+        return entity;
         
     }
     

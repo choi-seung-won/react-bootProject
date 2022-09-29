@@ -1,6 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
 
+// css
+import './css/new.css';
+
 import React,{Component} from 'react';
 import {Route} from "react-router-dom";
 import cookie from 'react-cookies';
@@ -11,7 +14,8 @@ import axois from "axios";
 import TestPage from './TestPage';
 //LoginPage
 import LoginPage from './LoginPage';
-
+//RegisterPage
+import RegisterPage from './RegisterPage';
 
 class App extends Component {
 constructor(props){
@@ -31,6 +35,7 @@ render () {
     <div className="App">
               <Route path='/Test' component={TestPage} />
               <Route path='/login' component={LoginPage} />
+              <Route path='/Register' component={RegisterPage} />
       <header className="App-header">
         
         
