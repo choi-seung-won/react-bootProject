@@ -141,7 +141,12 @@ class RegisterPage extends Component{
             })
             .catch(function(error){
                 if(error.response.status === 401){
-                    alert("중복된이메일입니다-401");
+                    Swal.fire({
+                        title: '중복된 이메일입니다.',
+                        text: '401(Unauthorized).',
+                        icon: 'error',
+                        confirmButtonText: '닫기'
+                      });
                     return false;
                 }
             }

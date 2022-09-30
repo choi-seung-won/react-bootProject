@@ -1,0 +1,10 @@
+use react;
+CREATE TABLE `userBoard` (
+`bid` varchar(100) NOT NULL COMMENT 'board-id',
+`title` varchar(100) DEFAULT NULL COMMENT 'title',
+`content` text COMMENT 'content',
+`reg_date` varchar(100) DEFAULT NULL COMMENT ' 등록날짜',
+`reg_user` varchar(100) DEFAULT NULL COMMENT ' 등록자',
+`update_date` varchar(100) DEFAULT NULL COMMENT ' 수정날짜',
+`update_user` varchar(100) DEFAULT NULL COMMENT ' 수정자'
+) engine=innodb default character set = utf8;

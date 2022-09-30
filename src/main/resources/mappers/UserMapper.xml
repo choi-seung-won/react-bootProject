@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.backend.mapper.MapperInterface">
 <select id = "submitLogin" resultType = "com.project.backend.DTO.UserDTO">
-    select * from react.react_user where useremail = #{useremail}
+    select username,useremail,userpassword,usermajor,userphone from react.react_user where useremail = #{useremail}
 </select>
 <select id = "verifyLogin" resultType = "com.project.backend.DTO.UserDTO">
-    select username,useremail,userpassword from react.react_user where useremail = #{useremail};
+    select username,useremail,userpassword,usermajor,userphone from react.react_user where useremail = #{useremail};
 </select>
 <insert id = "insertUser">
 INSERT INTO react.react_user

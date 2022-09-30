@@ -1,1 +1,1 @@
-loginpage구현및 bcrypt암호화검증
+register bcrypt암호화(jsonparse)

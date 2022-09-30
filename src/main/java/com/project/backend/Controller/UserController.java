@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.io.JsonStringEncoder;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.backend.BcryptService;
@@ -82,7 +84,29 @@ public class UserController {
     @RequestMapping(value="/register", method=RequestMethod.POST)
     public ResponseEntity<?> UserRegister(@RequestBody JSONObject registerInfo) throws JsonMappingException, JsonProcessingException {
        
+        System.out.println("registerinfotostring"+registerInfo.toString());
+
         ResponseEntity<?> entity;
+                
+        ObjectMapper objmapper = new ObjectMapper();
+        
+        String password = objmapper.writeValueAsString(registerInfo.get("is_Password"));
+
+        password = password.replace("\"", "");
+
+        //String password = (String)registerInfo.get("is_password");
+
+        //System.out.println(String.valueOf(registerInfo.get("is_password")));
+
+        BcryptService bcryptService = new BcryptService();
+
+        String cryptedpassword = bcryptService.encodeBcrypt(password, 10);
+
+        System.out.println("cryptedpassword:"+cryptedpassword);
+
+        registerInfo.put("is_Password", cryptedpassword); 
+
+        System.out.println(registerInfo.toString());
 
         try {
             mapper.insertUser(registerInfo);
@@ -120,11 +144,7 @@ public class UserController {
             mapper.insertUser(userDTO);
         } catch (Exception e) {
             e.printStackTrace();
-        } */
-        
-        
-        
-        
+        } */        
     }
     
     @RequestMapping(value="/dplicheck",method = RequestMethod.POST)
