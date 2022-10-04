@@ -9,13 +9,14 @@ import {Route} from "react-router-dom";
 import cookie from 'react-cookies';
 import axois from "axios";
 
-
 //TestPage
 import TestPage from './TestPage';
 //LoginPage
 import LoginPage from './LoginPage';
 //RegisterPage
 import RegisterPage from './RegisterPage';
+//userBoardCreatePage
+import userCreatePage from './userBoardCreate';
 
 class App extends Component {
 constructor(props){
@@ -36,6 +37,7 @@ render () {
               <Route path='/Test' component={TestPage} />
               <Route path='/login' component={LoginPage} />
               <Route path='/Register' component={RegisterPage} />
+              <Route path='/Create' component={userCreatePage} />
       <header className="App-header">
         
         

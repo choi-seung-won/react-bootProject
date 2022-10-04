@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.backend.mapper.MapperInterface">
+
+<insert id = "registerBoard">
+INSERT INTO react.userboard
+(
+    title,
+    content
+)
+VALUES (
+    #{title},
+    #{content}
+)
+</insert>
+
+</mapper>
