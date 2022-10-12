@@ -17,6 +17,10 @@ import LoginPage from './LoginPage';
 import RegisterPage from './RegisterPage';
 //userBoardCreatePage
 import userCreatePage from './userBoardCreate';
+//userBoardList
+import userBoardList from './userBoardList';
+//userBoardDetail
+import userBoardDetail from './userBoardDetail';
 
 class App extends Component {
 constructor(props){
@@ -38,6 +42,8 @@ render () {
               <Route path='/login' component={LoginPage} />
               <Route path='/Register' component={RegisterPage} />
               <Route path='/Create' component={userCreatePage} />
+              <Route path='/ListAll' component={userBoardList} />
+              <Route path='/Detail/:bid' component={userBoardDetail} />
       <header className="App-header">
         
         

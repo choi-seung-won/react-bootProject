@@ -1,5 +1,8 @@
 package com.project.backend.mapper;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 import org.json.simple.JSONObject;
 
@@ -23,4 +26,10 @@ public interface MapperInterface {
     public void registerBoard(BoardDTO boarddto) throws Exception;
 
     public BoardDTO selectBoard(int bid) throws Exception;
+
+    public List<BoardDTO> getAll() throws Exception;
+
+    public BoardDTO getDetail(int bid) throws Exception;
+
+    public List<BoardDTO> listPage(Map<String,Object> paramMap) throws Exception;
  }

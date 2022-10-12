@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
-@MapperScan(value = {"com.project.backend.mapper"})
+@MapperScan(value = {"com.project.backend"})
 public class BackendApplication {
 
 	public static void main(String[] args) {

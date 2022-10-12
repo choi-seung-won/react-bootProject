@@ -8,3 +8,5 @@ CREATE TABLE `userBoard` (
 `update_date` varchar(100) DEFAULT NULL COMMENT ' 수정날짜',
 `update_user` varchar(100) DEFAULT NULL COMMENT ' 수정자'
 ) engine=innodb default character set = utf8;
+
+alter table userBoard Modify bid varchar(100);

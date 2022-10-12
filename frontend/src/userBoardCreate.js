@@ -4,6 +4,12 @@ import axios from "axios";
 import $, { extend } from 'jquery';
 import Swal from 'sweetalert2'
 
+//if you use react class as component you can't use variables inside ,because classes are objects
+//If you have class based component, then you can define the variable outside the class (before the class definition).
+
+
+let Imgstore = [];
+let formData = new FormData();
 
 class userBoardCreate extends Component {
     constructor(props){
@@ -24,6 +30,7 @@ class userBoardCreate extends Component {
             //this.editBoard()
         }
     }
+
 
     /*
     loadImage = async() =>{
@@ -62,7 +69,6 @@ class userBoardCreate extends Component {
     */
 
     onChange = async(e) => {
-        alert('test')
         let tempFile = e.target.files;
         let filesArr = Array.prototype.slice.call(tempFile);
         let reg = /(.*?)\/(jpg|jpeg|png|bmp)$/;
@@ -72,7 +78,8 @@ class userBoardCreate extends Component {
                 document.getElementById("fileupload").value = "";
                 return;
             }
-            
+            Imgstore.push(f);
+            alert(Imgstore.length);
             console.log('foundfile=' + f.name);
             
             let reader = new FileReader();
@@ -89,8 +96,8 @@ class userBoardCreate extends Component {
             		var clicked = $(this);
             		clicked.parent().remove()
             		//Array.prototype.filter로 storeimg배열의 값 재구성
-                    this.tempArray = this.tempArray.filter(function (el){
-            			return el.name != imgname;
+                    Imgstore = Imgstore.filter(function (el){
+                        return el.name != imgname;
             		});
                     
             	  });
@@ -100,11 +107,10 @@ class userBoardCreate extends Component {
     }
 
     submitClick = async(type,e) => {
-        this.title = $('#title').val();
-        this.content = $('#content').val();
+        this.title_checker = $('#title').val();
+        this.content_checker = $('#content').val();
         
         this.fnValidate = (e) =>{
-            /*
             if(this.title_checker ===''){
                 $('#title').addClass('border_validate.err');
                 alert('checktitleplz')
@@ -118,7 +124,6 @@ class userBoardCreate extends Component {
                 return false;
             }
             $('#content').removeClass('border_validate_err');
-            */
             
             return true;
         }
@@ -141,20 +146,19 @@ class userBoardCreate extends Component {
                 if(response.status == '200'){
                     alert('status200,ok');
                     try{
-                        const formData = new FormData();
-                        /*
-                        tempArray.forEach(file => {
-                            formData.append("ArrayofFileName",file);
-                        });
-                        */
-                        axios.post('/img..',{
-                            headers : {"Content-Type" : "multipart/form-data"},
-                           data : formData 
+                        for(let i = 0 ; i < Imgstore.length ; i ++ ){
+                            console.log('foundfile'+i+'='+Imgstore[i].name);
+                            formData.append("fileupload[]",Imgstore[i]);
+                            console.log(formData.length);
+                        }
+                        //axios.post양식문제있음
+                        axios.post('/board/ImagePost',formData,{
+                            headers : {'content-type': 'multipart/form-data'},
                         }).then(response => {
-                            alert(response.status);
+                            alert(response);
                         })
                     }catch(error){
-                        alert('error');
+                        alert(error);
                     }
                 }else if(response.status == '401'){
                     alert('401');
@@ -167,7 +171,7 @@ class userBoardCreate extends Component {
         }
 
     };
-
+    
     render(){
         return(
             <section>
