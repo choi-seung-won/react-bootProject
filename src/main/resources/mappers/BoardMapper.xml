@@ -20,4 +20,15 @@ select * from userboard
 <select id = "getDetail" resultType = "com.project.backend.DTO.BoardDTO">
 select * from userboard where bid = #{bid}
 </select>
+<insert id="postImage">
+INSERT INTO react.filename_tbl
+(
+    bid,
+    filename
+)
+values(
+    LAST_INSERT_ID(),
+    #{filename}
+)
+</insert>
 </mapper>

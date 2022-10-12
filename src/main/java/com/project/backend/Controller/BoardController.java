@@ -104,7 +104,11 @@ public class BoardController {
 
             JSONObject entity = new JSONObject();
 
-            entity.put("filename", Utils.uploadFile(fileuploadPath, file.getOriginalFilename(), file.getBytes()));
+            String fileName = Utils.uploadFile(fileuploadPath, file.getOriginalFilename(), file.getBytes());
+
+            entity.put("filename", fileName);
+
+            mapper.postImage(fileName);
 
             entities.add(entity);
 
