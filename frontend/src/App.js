@@ -3,11 +3,16 @@ import './App.css';
 
 // css
 import './css/new.css';
+import './dist/Tabler.css';
+
+
 
 import React,{Component} from 'react';
 import {Route} from "react-router-dom";
 import cookie from 'react-cookies';
-import axois from "axios";
+import axios from "axios";
+
+import HeaderAdmin from './Header/Header.js'
 
 //TestPage
 import TestPage from './TestPage';
@@ -32,19 +37,38 @@ constructor(props){
 
 
 componentDidMount() {
-
+  axios.post('/SessionConfirm',{
+    token1 : cookie.load('useremail')
+    , token2 : cookie.load('username')
+  }).then(response =>{
+    this.state.useremail = response.data.token1
+    let password = cookie.load('userpassword')
+    if(password !== undefined){
+      axios.post('/loginVerify',{
+        Email : this.state.useremail,
+        password : password
+      }).then(response =>{
+        if(response.data.json[0].useremail === undefined){
+          this.state.username = 'notlogged'; 
+        }
+      }).catch(error =>{
+        alert(error)
+      });
+    }
+  })
+/*   .catch(response => alert(response)) */
 }
 
 render () {
   return (
     <div className="App">
+      <HeaderAdmin />
               <Route path='/Test' component={TestPage} />
               <Route path='/login' component={LoginPage} />
               <Route path='/Register' component={RegisterPage} />
               <Route path='/Create' component={userCreatePage} />
               <Route path='/ListAll' component={userBoardList} />
               <Route path='/Detail/:bid' component={userBoardDetail} />
-      <header className="App-header">
         
         
         <img src={logo} className="App-logo" alt="logo" />
@@ -59,7 +83,7 @@ render () {
         >
           Learn React
         </a>
-      </header>
+
     </div>
   );
 }

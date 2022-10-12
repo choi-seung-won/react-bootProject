@@ -38,8 +38,7 @@ class userBoardList extends Component {
         let result = []
         var BoardList = this.state.responseBoardList.data
         if (BoardList && BoardList.length > 0) {
-            alert(JSON.stringify(BoardList.length));
-            
+            /* alert(JSON.stringify(BoardList.length)); */
             for (let i = 0; i < BoardList.length; i++) {
                 var data = BoardList[i];
 /* 

@@ -31,5 +31,7 @@ public interface MapperInterface {
 
     public BoardDTO getDetail(int bid) throws Exception;
 
+    public void postImage(String fileName) throws Exception;
+
     public List<BoardDTO> listPage(Map<String,Object> paramMap) throws Exception;
  }
