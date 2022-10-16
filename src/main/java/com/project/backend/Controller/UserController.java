@@ -2,7 +2,12 @@ package com.project.backend.Controller;
 
 import java.util.Map;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.swing.text.html.parser.Entity;
 import javax.xml.ws.Response;
 
@@ -11,6 +16,9 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +34,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.backend.BcryptService;
 import com.project.backend.DTO.UserDTO;
 import com.project.backend.mapper.MapperInterface;
+
+import ch.qos.logback.classic.Logger;
+import io.jsonwebtoken.ExpiredJwtException;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
 //jackson-databind는 boot의경우 spring-boot-starter-web에포함되어있음.
@@ -36,6 +48,12 @@ public class UserController {
     @Autowired
     MapperInterface mapper;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
     @RequestMapping(value = "/RequestTest",method={RequestMethod.POST})
     public ResponseEntity<UserDTO> testt(@RequestBody Map<String,String> string){
             System.out.println("itsnotnull");
@@ -43,12 +61,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/loginVerify", method = {RequestMethod.POST})
-    public ResponseEntity<UserDTO> login(@RequestBody Map<String,String> Logininfo){
+    public ResponseEntity<UserDTO> login(@RequestBody Map<String,String> Logininfo, HttpServletResponse response){
     
         BcryptService bcryptService = new BcryptService();
 
         String useremail = Logininfo.get("Email");
-        String cryptedPassword = Logininfo.get("Password");
+        String userPassword = Logininfo.get("Password");
 
         UserDTO userDTO;
         ResponseEntity<UserDTO> entity = null;
@@ -64,11 +82,15 @@ public class UserController {
                 return entity = new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
 
-            boolean doesItMatch = bcryptService.matchesBcrypt(cryptedPassword,mapper.submitLogin(useremail).getUserpassword());
+            boolean doesItMatch = bcryptService.matchesBcrypt(userPassword,mapper.submitLogin(useremail).getUserpassword().replace("\\/", "/"));
 
             if(doesItMatch){
                 userDTO = mapper.submitLogin(useremail);
                 entity = new ResponseEntity<>(userDTO,HttpStatus.OK);
+                
+                Cookie cookieSaveEmail = new Cookie("saveEmail", userDTO.getUseremail());
+                cookieSaveEmail.setMaxAge(60 * 60);
+                response.addCookie(cookieSaveEmail);
             }else{
                 //401Error
                 return entity = new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -99,6 +121,8 @@ public class UserController {
 
         BcryptService bcryptService = new BcryptService();
 
+
+        //password saved with '\'(backslash)
         String cryptedpassword = bcryptService.encodeBcrypt(password, 10);
 
         System.out.println("cryptedpassword:"+cryptedpassword);
@@ -178,6 +202,40 @@ public class UserController {
         return entity;
         
     }
-    
+
+    @RequestMapping(value="/SessionConfirm",method = RequestMethod.POST)
+    public ResponseEntity<?> SessionConfirm(HttpServletRequest request)throws Exception{
+
+        final String requestTokenHeader = request.getHeader("Authorization");
+
+        String username = null;
+        String jwtToken = null;
+
+        if(requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")){
+
+            jwtToken = requestTokenHeader.substring(7);
+            try{
+                username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Unable to get JWT Token");
+            } catch (ExpiredJwtException e) {
+                System.out.println("JWT Token has expired");
+            }
+        }else {
+            System.out.println("notstartedwithbearer");
+        }
+
+        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
+            UserDTO userdto = mapper.submitLogin(username);
+            if(jwtTokenUtil.validateToken(jwtToken, userdto)){
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = 
+                new UsernamePasswordAuthenticationToken(jwtToken, userdto);
+            }
+        }
+        
+        return null;
+    }
+
+
 
 }

@@ -31,6 +31,7 @@ class App extends Component {
 constructor(props){
   super(props);
   this.state={
+    
    }
 }
 
@@ -42,12 +43,13 @@ componentDidMount() {
     , token2 : cookie.load('username')
   }).then(response =>{
     this.state.useremail = response.data.token1
-    let password = cookie.load('userpassword')
-    if(password !== undefined){
+    let Is_password = cookie.load('userpassword')
+    if(Is_password !== undefined){
       axios.post('/loginVerify',{
         Email : this.state.useremail,
-        password : password
+        password : Is_password
       }).then(response =>{
+        alert(response.status);
         if(response.data.json[0].useremail === undefined){
           this.state.username = 'notlogged'; 
         }
