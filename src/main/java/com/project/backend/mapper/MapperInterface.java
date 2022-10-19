@@ -34,4 +34,8 @@ public interface MapperInterface {
     public void postImage(String fileName) throws Exception;
 
     public List<BoardDTO> listPage(Map<String,Object> paramMap) throws Exception;
+
+    public void deleteAttach(Integer bid) throws Exception; 
+
+    public List<String> getAttach(Integer bid) throws Exception;
  }

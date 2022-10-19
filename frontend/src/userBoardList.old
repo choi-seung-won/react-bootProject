@@ -1,15 +1,11 @@
+
+
 import React, { Component } from 'react';
-import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import axios from "axios";
-import Swal from 'sweetalert2';
-import BootstrapTable from "react-bootstrap-table-next";
-import Pagination from "react-bootstrap-table2-paginator"
-import styled from 'styled-components';
-
+import Swal from 'sweetalert2'
 
 class userBoardList extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -23,12 +19,11 @@ class userBoardList extends Component {
     }
 
     callBoardList = async () => {
-
         axios.get('/board/getList').then(response => {
             //alert (JSON.stringify(response.data));
             try {
                 this.setState({ responseBoardList: response });
-                this.setState({ appendBoardList: this.BoardListAppend() });
+                this.setState({ appendBoardList: this.BoardListAppend() })
             } catch (error) {
                 alert(error);
                 this.sweetalert('작업중 오류가 발생하였습니다-1catch.', '', 'error', '닫기');
@@ -48,12 +43,12 @@ class userBoardList extends Component {
             /* alert(JSON.stringify(BoardList.length)); */
             for (let i = 0; i < BoardList.length; i++) {
                 var data = BoardList[i];
-                /* 
-                                var date = data.reg_date
-                                var year = date.substr(0, 4)
-                                var month = date.substr(4, 2)
-                                var day = date.substr(6, 2)
-                                var reg_date = year + '.' + month + '.' + day */
+/* 
+                var date = data.reg_date
+                var year = date.substr(0, 4)
+                var month = date.substr(4, 2)
+                var day = date.substr(6, 2)
+                var reg_date = year + '.' + month + '.' + day */
 
                 result.push(
                     <tr class="hidden_type">
@@ -121,26 +116,24 @@ class userBoardList extends Component {
             callbackFunc()
         })
     }
-    
 
     render() {
         return (
             <section>
                 <article class="s_cnt mp_pro_li ct1 mp_pro_li_admin">
-                    <div class="li_top">
-                        <h2 class="s_tit1"> list of b</h2>
-                        <div class="li_top_sch af">
-                            <Link to={'/Create'} className="sch_bt2 wi_au">register</Link>
-                        </div>
-                        <table class="table_ty2 ad_tlist">
-
-                            {this.state.appendBoardList}
-                        </table>
+                <div class = "li_top">
+                    <h2 class = "s_tit1"> list of b</h2>
+                    <div class = "li_top_sch af">
+                    <Link to={'/Create'} className="sch_bt2 wi_au">register</Link>
                     </div>
+                <table class = "table_ty2 ad_tlist">
+                    {this.state.appendBoardList}
+                </table>
+                </div>
                 </article>
             </section>
         );
     }
 
 }
-export default userBoardList;
+//export default userBoardList;

@@ -1,11 +1,14 @@
 package com.project.backend.Controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.*;
 
 import javax.annotation.Resource;
 import javax.xml.ws.Response;
 
+import org.springframework.http.MediaType;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -23,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.project.backend.DTO.BoardDTO;
 import com.project.backend.mapper.MapperInterface;
+import org.apache.commons.io.IOUtils;
 
 @RestController
 @RequestMapping("/board")
@@ -118,5 +122,75 @@ public class BoardController {
         return new ResponseEntity<List<JSONObject>>(entities, responseHeaders, HttpStatus.CREATED);
 
     }
+
+    @ResponseBody
+	@RequestMapping("/displayFile")
+	public ResponseEntity<byte[]> displayFile(@RequestParam("fileName") String savedFileName) throws Exception {
+
+		InputStream is = null;
+		ResponseEntity<byte[]> entity = null;
+
+		try {
+
+			String formatName = savedFileName.substring(savedFileName.lastIndexOf(".") + 1);
+
+			MediaType mType = MediaUtils.getMediaType(formatName);
+
+			HttpHeaders headers = new HttpHeaders();
+
+			is = new FileInputStream(fileuploadPath + savedFileName);
+
+			if (mType != null) {
+				headers.setContentType(mType);
+			} else {
+
+				savedFileName = savedFileName.substring(savedFileName.indexOf("_") + 1);
+				headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+				headers.add("Content-Disposition",
+						"attachment; filename=\"" + new String(savedFileName.getBytes("UTF-8"), "ISO-8859-1") + "\"");
+			}
+
+			entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(is), headers, HttpStatus.CREATED);
+		} catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
+		} finally {
+			is.close();
+		}
+		return entity;
+	}
+
+    @ResponseBody
+	@RequestMapping(value = "/deleteAllFiles", method = RequestMethod.POST)
+	public ResponseEntity<String> deleteFile(@RequestParam("files") String[] files) {
+
+		//System.out.println("nowdeletefiles"+files.toString());
+		if (files == null || files.length == 0) {
+			return new ResponseEntity<String>("deleted", HttpStatus.OK);
+		}
+
+		for (String fileName : files) {
+			//System.out.println("filenames: " + fileName);
+			String fName = fileName.substring(30);
+			//goturltoo
+			String formatName = fileName.substring(fileName.lastIndexOf(".") + 1);
+			//System.out.println("formatnames" + formatName);
+			MediaType mType = MediaUtils.getMediaType(formatName);
+
+			
+			
+			if(mType != null) {
+				//String front = fileName.substring(0,42);
+				//System.out.println(end);
+				//File temp = new File(fileuploadPath + (front).replace('/', File.separatorChar));
+				//System.out.println("refinename:"+temp.getName());
+				//temp.delete();
+				System.out.println(fileuploadPath + fName.replace('/', File.separatorChar));
+				new File(fileuploadPath + fName.replace('/', File.separatorChar)).delete();
+			}
+			
+		}
+		return new ResponseEntity<String>("deleted", HttpStatus.OK);
+	}
 
 }

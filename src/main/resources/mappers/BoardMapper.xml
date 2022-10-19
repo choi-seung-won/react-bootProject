@@ -14,7 +14,7 @@ VALUES (
 )
 </insert>
 <select id = "getAll" resultType = "com.project.backend.DTO.BoardDTO">
-select * from userboard
+select * from userboard order by bid desc
 </select>
 
 <select id = "getDetail" resultType = "com.project.backend.DTO.BoardDTO">
@@ -31,4 +31,10 @@ values(
     #{filename}
 )
 </insert>
+<select id = "getAttach" resultType = "String" >
+select * from filename_tbl where bid = #{bid}
+</select>
+<delete id="deleteAttach">
+delete from filename_tbl where bid = #{bid}
+</delete>
 </mapper>
