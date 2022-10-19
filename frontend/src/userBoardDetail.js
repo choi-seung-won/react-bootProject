@@ -28,7 +28,7 @@ class userBoardDetail extends Component {
                         $('#content').val(response.data.content);
                     }
                 }catch(error){
-
+                    alert(error); 
                 }
             }
         )

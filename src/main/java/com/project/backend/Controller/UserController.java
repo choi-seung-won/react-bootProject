@@ -16,9 +16,10 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
+//import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,10 +33,12 @@ import com.fasterxml.jackson.core.io.JsonStringEncoder;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.backend.BcryptService;
+import com.project.backend.TokenProvider;
 import com.project.backend.DTO.UserDTO;
 import com.project.backend.mapper.MapperInterface;
 
 import ch.qos.logback.classic.Logger;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,8 +51,8 @@ public class UserController {
     @Autowired
     MapperInterface mapper;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    //@Autowired
+    //private AuthenticationManager authenticationManager;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -206,7 +209,7 @@ public class UserController {
     @RequestMapping(value="/SessionConfirm",method = RequestMethod.POST)
     public ResponseEntity<?> SessionConfirm(HttpServletRequest request)throws Exception{
 
-        final String requestTokenHeader = request.getHeader("Authorization");
+        final String requestTokenHeader = request.getHeader( "Authorization");
 
         String username = null;
         String jwtToken = null;
@@ -236,6 +239,19 @@ public class UserController {
         return null;
     }
 
+    @RequestMapping(value= "/jwttest",method = RequestMethod.POST)
+    public ResponseEntity<?> jwttest(HttpServletRequest request)throws Exception{
+        String AUTHORIZATION_HEADER = "Authorization";
+        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+
+        if(StringUtils.hasText(bearerToken)&& bearerToken.startsWith("Bearer ")){
+            System.out.println("bearertest"+bearerToken.substring(7));
+        }
+
+        return null;
+    }
+
+    
 
 
 }

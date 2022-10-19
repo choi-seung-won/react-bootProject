@@ -31,4 +31,10 @@ values(
     #{filename}
 )
 </insert>
+<select id = "getAttach" resultType = "String" >
+select * from filename_tbl where bid = #{bid}
+</select>
+<delete id="deleteAttach">
+delete from filename_tbl where bid = #{bid}
+</delete>
 </mapper>
