@@ -8,7 +8,7 @@ class RegisterPage extends Component{
     constructor(props){
         super(props);
         this.state = {
-
+            username : '',
         }
     }
 
@@ -226,6 +226,10 @@ class RegisterPage extends Component{
     }
 
     render(){
+        if(sessionStorage.getItem('useremail') != null){
+            window.location.href = '/';
+            
+        }
         return (
             <div>
                 <section className="sub_wrap" >

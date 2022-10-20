@@ -10,13 +10,15 @@ class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            usernm: '',
+            username: 'NotLogged',
+            useremail: 'Notlogged'
         };
     }
 
 
 
     componentDidMount() {
+                
         var cookie_useremail = cookie.load('useremail')
         var cookie_usernm = cookie.load('username')
         var cookie_password = cookie.load('userpassword')
@@ -62,31 +64,52 @@ class Header extends Component {
         cookie.remove('useremail', { path: '/' });
         cookie.remove('username', { path: '/' });
         cookie.remove('userpassword', { path: '/' });
-        window.location.href = '/login';
+        sessionStorage.removeItem("username");
+        window.location.href = '/';
     }
 
-
-
-
+    renderSwitch(username) {
+        if(username === null){
+            return <tabler.AccountDropdown
+            avatarURL="./demo/faces/female/25.jpg"
+            name={this.state.username}
+            description="Administrator"
+            options={[
+                { icon: "user", value: "Login", to: "/login" },
+                { icon: "settings", value: "Signin", to: "/Register"},
+                { icon: "settings", value: "Settings", to: "/settings" },
+                "divider",
+                "help",
+            ]}
+        />;
+        }else{
+            return <tabler.AccountDropdown
+            avatarURL="./demo/faces/female/25.jpg"
+            name={this.state.username}
+            description="Administrator"
+            options={[
+                { icon: "settings", value: "Settings", to: "/settings" },
+                "divider",
+                "help",
+                {icon: "log-out", value: "SignOut", to: "/logout" , onClick : this.logout},
+            ]}
+        />;
+        }
+        
+      }
 
 
     render() {
+        if(sessionStorage.getItem('useremail') != null){
+        this.state.username = sessionStorage.getItem('username');
+        }
+        
         return (
             <header>
-             <div class="header py-4"><div class="container"><div class="d-flex"><a class="header-brand" href="/"></a><div class="d-flex order-lg-2 ml-auto"><div class="nav-item"><a class="nav-link d-none d-md-flex"></a></div><div className='dropdown d-flex'></div>
+             <div class="header py-4"><div class="container"><div class="d-flex"><a class="header-brand" href="/"></a><div class="d-flex order-lg-2 ml-auto">
 
-                <tabler.AccountDropdown
-                        avatarURL="./demo/faces/female/25.jpg"
-                        name="Jane Pearson"
-                        description="Administrator"
-                        options={[
-                            { icon: "profile", value: "profic", to: "/profc" },
-                            { icon: "settings", value: "Settings", to: "/settings" },
-                            "divider",
-                            "help",
-                            "logout",
-                        ]}
-                    />
+            {this.renderSwitch(this.state.username)}
+                
                 </div><a class="header-toggler d-lg-none ml-3 ml-lg-0"><span class="header-toggler-icon"></span></a></div></div></div>
                 <div className='header d-lg-flex p-0'>
                     <div className='container'>

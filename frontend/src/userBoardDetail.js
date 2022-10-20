@@ -16,6 +16,10 @@ class userBoardDetail extends Component {
         this.callBoardDetail()
     }
 
+    getFileInfo = (props) =>{
+
+    }
+
     callBoardDetail = async () =>{
         axios.get('/board/getDetail',{
             params: {bid : this.state.before_Boardid}
@@ -26,6 +30,24 @@ class userBoardDetail extends Component {
                     if(response.status =="200"){
                         $('#title').val(response.data.title);
                         $('#content').val(response.data.content);
+
+                        axios.get('/board/getDetailImg',{
+                            params:{bid: this.state.before_Boardid}
+                        }).then(
+                            response =>{
+                                try{
+                                    //alert(response.data.length)
+                                    for(let i=0; i < response.data.length; i ++){
+                                        alert(response.data[i]);
+                                        $('#imglist').append('<img alt="notloaded" src="C:\\uploadfiles\\upload'+ process.env.PUBLIC_URL + response.data[i]+'">')
+                                        $('#imglist').append('<p>itstest'+response.data[i]+'</p>')
+                                    }
+                                }catch{
+                                    
+                                }
+                            }
+                        )
+
                     }
                 }catch(error){
                     alert(error); 
@@ -41,6 +63,7 @@ class userBoardDetail extends Component {
                 <h2>HELLOO</h2>
                 <input type="text" name="title" id="title"></input>
                 <input type="text" name="content" id="content"></input>
+                <div><span id="imglist"></span></div>
             </section>
         )
     }

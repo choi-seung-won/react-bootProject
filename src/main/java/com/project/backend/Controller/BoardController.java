@@ -76,6 +76,12 @@ public class BoardController {
         return entity;
     }
 
+    @RequestMapping(value = "/getDetailImg",method = {RequestMethod.GET})
+    public List<String> DetailImg(@RequestParam int bid) throws Exception{
+        System.out.println("getdetailimg"+mapper.getAttach(bid).toString());
+        return mapper.getAttach(bid);
+    }
+
     @RequestMapping(value = "/Register", method = { RequestMethod.POST })
     public ResponseEntity<String> register(@RequestBody BoardDTO boarddto) {
 

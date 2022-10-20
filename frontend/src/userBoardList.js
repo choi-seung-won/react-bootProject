@@ -60,7 +60,7 @@ class userBoardList extends Component {
                         <td>{data.title}
                         </td>
                         <td>
-                            <Link to={'/board/getDetail/' + data.bid} className="bt_c1 bt_c2 w50_b">
+                            <Link to={'Detail/' + data.bid} className="bt_c1 bt_c2 w50_b">
                                 이동
                             </Link>
                             <Link to={'google.com'}>
