@@ -6,6 +6,9 @@ import $ from 'jquery';
 import Swal from 'sweetalert2';
 import * as tabler from 'tabler-react';
 
+
+
+
 class Header extends Component {
     constructor(props) {
         super(props);
@@ -39,6 +42,7 @@ class Header extends Component {
             $('.hd_top').hide()
         }
     }
+    /*
     callSessionInfoApi = (type) => {
         axios.post('/Login?sessionConfirm', {
             token1: cookie.load('useremail')
@@ -50,7 +54,7 @@ class Header extends Component {
             .catch(error => {
                 this.sweetalert()
             });
-    }
+    } */
     sweetalert = (title, contents, icon, confirmButtonText) => {
         Swal.fire({
             title: title,
@@ -65,11 +69,12 @@ class Header extends Component {
         cookie.remove('username', { path: '/' });
         cookie.remove('userpassword', { path: '/' });
         sessionStorage.removeItem("username");
+        sessionStorage.removeItem("useremail")
         window.location.href = '/';
     }
 
     renderSwitch(username) {
-        if(username === null){
+        if(username === 'NotLogged'){
             return <tabler.AccountDropdown
             avatarURL="./demo/faces/female/25.jpg"
             name={this.state.username}
@@ -116,7 +121,9 @@ class Header extends Component {
                         <div className='row row align-items-center'>
                             <div className='col-lg-3 ml-auto'></div>
                             <div className='col col-lg order-lg-first'>
-                                <ul class="nav nav-tabs border-0 flex-column flex-lg-row"><li class="nav-item"><a aria-current="page" class="nav-link active active" history="[object Object]" match="[object Object]" href="/"><i class="fe fe-home"></i> Home</a></li><li class="nav-item"><a class="nav-link"><i class="fe fe-box" ></i><Link to={'/Create'}> Create</Link></a></li><li class="nav-item"><a class="nav-link"><i class="fe fe-calendar"></i> <Link to={'/ListAll'} >ListAll</Link></a></li><li class="nav-item"><a class="nav-link"><i class="fe fe-file"></i> Pages</a></li><li class="nav-item"><a class="nav-link" history="[object Object]" match="[object Object]" href="/form-elements"><i class="fe fe-check-square"></i> Forms</a></li><li class="nav-item"><a class="nav-link" history="[object Object]" match="[object Object]" href="/gallery"><i class="fe fe-image"></i> Gallery</a></li><li class="nav-item"><a class="nav-link" href="/"><i class="fe fe-file-text"></i> Documentation</a></li></ul>
+                                <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
+                                    <li class="nav-item"><a class="nav-link"  href="/"><i class="fe fe-home"></i> Home</a></li>
+                                    <li class="nav-item"><a class="nav-link"><i class="fe fe-box" ></i><Link to={'/Create'}> Create</Link></a></li><li class="nav-item"><a class="nav-link"><i class="fe fe-calendar"></i> <Link to={'/ListAll'} >ListAll</Link></a></li><li class="nav-item"><a class="nav-link"><i class="fe fe-file"></i> Pages</a></li><li class="nav-item"><a class="nav-link" history="[object Object]" match="[object Object]" href="/form-elements"><i class="fe fe-check-square"></i> Forms</a></li><li class="nav-item"><a class="nav-link" history="[object Object]" match="[object Object]" href="/gallery"><i class="fe fe-image"></i> Gallery</a></li><li class="nav-item"><a class="nav-link" href="/"><i class="fe fe-file-text"></i> Documentation</a></li></ul>
                             </div>
                         </div>
 

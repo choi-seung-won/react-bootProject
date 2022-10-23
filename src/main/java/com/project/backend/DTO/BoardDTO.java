@@ -12,4 +12,5 @@ public class BoardDTO {
     private String reg_User;
     private Date update_Date;
     private String update_User;
+    private String viewcount;
 }

@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import BootstrapTable from "react-bootstrap-table-next";
 import Pagination from "react-bootstrap-table2-paginator"
 import styled from 'styled-components';
+import Table from 'react-bootstrap/table';
 
 
 class userBoardList extends Component {
@@ -23,29 +24,27 @@ class userBoardList extends Component {
     }
 
     callBoardList = async () => {
-
         axios.get('/board/getList').then(response => {
-            //alert (JSON.stringify(response.data));
+            //alert(JSON.stringify(response.data));
+            alert(JSON.stringify(response));
             try {
                 this.setState({ responseBoardList: response });
-                this.setState({ appendBoardList: this.BoardListAppend() });
+                this.setState({ appendBoardList: this.BoardListAppend(response) });
             } catch (error) {
                 alert(error);
                 this.sweetalert('작업중 오류가 발생하였습니다-1catch.', '', 'error', '닫기');
             }
-
-        })
-            .catch(error => {
-                this.sweetalert.bind('작업중 오류가 발생하였습니다.', '', 'error', '닫기'); return false;
-            });
+        }).catch(error => {
+            this.sweetalert.bind('작업중 오류가 발생하였습니다.', '', 'error', '닫기'); return false;
+        });
     }
 
-    BoardListAppend = () => {
-
+    BoardListAppend = (response) => {
+        //alert(JSON.stringify(response))
         let result = []
-        var BoardList = this.state.responseBoardList.data
+        var BoardList = response.data;
+        //alert(BoardList.length)
         if (BoardList && BoardList.length > 0) {
-            /* alert(JSON.stringify(BoardList.length)); */
             for (let i = 0; i < BoardList.length; i++) {
                 var data = BoardList[i];
                 /* 
@@ -54,22 +53,13 @@ class userBoardList extends Component {
                                 var month = date.substr(4, 2)
                                 var day = date.substr(6, 2)
                                 var reg_date = year + '.' + month + '.' + day */
-
                 result.push(
-                    <tr class="hidden_type">
-                        <td>{data.title}
-                        </td>
-                        <td>
-                            <Link to={'Detail/' + data.bid} className="bt_c1 bt_c2 w50_b">
-                                이동
-                            </Link>
-                            <Link to={'google.com'}>
-                                수정
-                            </Link>
-                            <a href='google.com' class="bt_c1 w50_b" id={data.bid} onClick={(e) => this.deleteBoard(e)}>
-                                삭제
-                            </a>
-                        </td>
+                    <tr>
+                        <Link to={'Detail/' + data.bid}>
+                            <td>{data.title}</td>
+                            <td>{data.reg_User}</td>
+                            <td>{data.viewcount}</td>
+                        </Link>
                     </tr>
                 )
             }
@@ -121,22 +111,40 @@ class userBoardList extends Component {
             callbackFunc()
         })
     }
-    
+
 
     render() {
         return (
             <section>
-                <article class="s_cnt mp_pro_li ct1 mp_pro_li_admin">
-                    <div class="li_top">
-                        <h2 class="s_tit1"> list of b</h2>
-                        <div class="li_top_sch af">
+                {/* <article className="s_cnt mp_pro_li ct1 mp_pro_li_admin">
+                    <div className="li_top">
+                        <h2 className="s_tit1"> list of b</h2>
+                        <div className="li_top_sch af">
                             <Link to={'/Create'} className="sch_bt2 wi_au">register</Link>
                         </div>
-                        <table class="table_ty2 ad_tlist">
-
+                        <table className="table_ty2 ad_tlist">
+                            <thead>
+                            <tbody>
                             {this.state.appendBoardList}
+                            </tbody>
+                            </thead>
                         </table>
                     </div>
+                </article> */}
+                <article>
+                     <Table striped bordered hover>
+                        <thead>
+                            <tr>
+                                <th>글 제목</th>
+                                <th>등록일</th>
+                                <th>작성자</th>
+                            </tr>
+                        </thead>
+                            <tbody>
+                            {this.state.appendBoardList}
+                            </tbody>
+                    </Table> 
+                    
                 </article>
             </section>
         );
