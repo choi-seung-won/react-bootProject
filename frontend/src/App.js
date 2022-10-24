@@ -38,6 +38,7 @@ constructor(props){
 
 
 componentDidMount() {
+  /*
   axios.post('/SessionConfirm',{
     token1 : cookie.load('useremail')
     , token2 : cookie.load('username')
@@ -58,6 +59,7 @@ componentDidMount() {
       });
     }
   })
+  */
 /*   .catch(response => alert(response)) */
 }
 
@@ -71,21 +73,6 @@ render () {
               <Route path='/Create' component={userCreatePage} />
               <Route path='/ListAll' component={userBoardList} />
               <Route path='/Detail/:bid' component={userBoardDetail} />
-        
-        
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-
     </div>
   );
 }

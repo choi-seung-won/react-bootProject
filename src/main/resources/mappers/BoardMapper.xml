@@ -6,11 +6,13 @@
 INSERT INTO react.userboard
 (
     title,
-    content
+    content,
+    reg_Date
 )
 VALUES (
     #{title},
-    #{content}
+    #{content},
+    now()
 )
 </insert>
 <select id = "getAll" resultType = "com.project.backend.DTO.BoardDTO">
@@ -32,9 +34,25 @@ values(
 )
 </insert>
 <select id = "getAttach" resultType = "String" >
-select * from filename_tbl where bid = #{bid}
+select filename from filename_tbl where bid = #{bid}
 </select>
 <delete id="deleteAttach">
 delete from filename_tbl where bid = #{bid}
 </delete>
+<update id = "updateBoard">
+update userBoard set viewcount = viewcount + 1 where bid = #{bid} 
+</update>
+
+<insert id="postComment">
+insert into react.user_comment(
+    content,username,reg_Date,bid
+    )
+values(
+    #{content},#{username},now(),#{bid}
+)
+</insert>
+<select id = "selectComment" resultType = "com.project.backend.DTO.CommentDTO">
+select * from user_comment where bid = #{bid} 
+</select>
+
 </mapper>

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.json.simple.JSONObject;
 
 import com.project.backend.DTO.BoardDTO;
+import com.project.backend.DTO.CommentDTO;
 import com.project.backend.DTO.UserDTO;
 
 public interface MapperInterface {
@@ -38,4 +39,10 @@ public interface MapperInterface {
     public void deleteAttach(Integer bid) throws Exception; 
 
     public List<String> getAttach(Integer bid) throws Exception;
+
+    public void updateBoard(Integer bid) throws Exception;
+
+    public void postComment(CommentDTO commentdto)throws Exception;
+
+    public List<CommentDTO> selectComment(Integer bid) throws Exception;
  }

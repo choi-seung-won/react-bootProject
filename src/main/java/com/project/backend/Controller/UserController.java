@@ -206,6 +206,7 @@ public class UserController {
         
     }
 
+    /* 
     @RequestMapping(value="/SessionConfirm",method = RequestMethod.POST)
     public ResponseEntity<?> SessionConfirm(HttpServletRequest request)throws Exception{
 
@@ -238,7 +239,7 @@ public class UserController {
         
         return null;
     }
-
+*/
     @RequestMapping(value= "/jwttest",method = RequestMethod.POST)
     public ResponseEntity<?> jwttest(HttpServletRequest request)throws Exception{
         String AUTHORIZATION_HEADER = "Authorization";

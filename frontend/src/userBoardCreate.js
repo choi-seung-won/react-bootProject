@@ -155,25 +155,26 @@ class userBoardCreate extends Component {
                             axios.post('/board/ImagePost', formData, {
                                 headers: { 'content-type': 'multipart/form-data' },
                             }).then(response => {
-                                alert(response);
+                                //alert(response);
+                                if(response.status =='201'){
+                                    Swal.fire({
+                                        position : 'bottom-end',
+                                        icon: 'success',
+                                        title: "등록성공",
+                                        showConfirmButton: false,
+                                        timer: 1000
+                                    });
+                                    setTimeout(function(){
+                                        this.props.history.push('/ListAll');
+                                    }.bind(this),1000
+                                    )
+                                }
                             })
                         } catch (error) {
                             alert(error);
                         }
                     } else if (response.status == '401') {
                         alert('401');
-                    } else {
-                        Swal.fire({
-                            position : 'bottom-end',
-                            icon: 'success',
-                            title: "등록성공",
-                            showConfirmButton: false,
-                            timer: 1000
-                        });
-                        setTimeout(function(){
-                            this.props.history.push('/ListAll');
-                        }.bind(this),1000
-                        )
                     }
                 }
             } catch (error) {

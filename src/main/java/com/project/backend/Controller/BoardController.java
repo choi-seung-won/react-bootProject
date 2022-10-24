@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.project.backend.DTO.BoardDTO;
+import com.project.backend.DTO.CommentDTO;
 import com.project.backend.mapper.MapperInterface;
 import org.apache.commons.io.IOUtils;
 
@@ -32,8 +33,9 @@ import org.apache.commons.io.IOUtils;
 @RequestMapping("/board")
 public class BoardController {
 
-    private String fileuploadPath = "C:\\uploadfiles\\upload";
-
+    private String fileuploadPath = 
+    //"C:\\uploadfiles\\upload";
+    "frontend\\public\\uploadStorage";
     @Autowired
     MapperInterface mapper;
 
@@ -61,9 +63,9 @@ public class BoardController {
 
     @RequestMapping(value = "/getDetail", method = { RequestMethod.GET })
     public ResponseEntity<BoardDTO> Detail(@RequestParam int bid) {
-
         ResponseEntity<BoardDTO> entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         try {
+            mapper.updateBoard(bid);
             System.out.println("paramis"+bid);
             BoardDTO boarddto = mapper.getDetail(bid);
             System.out.println("boarddtois-"+boarddto);
@@ -74,6 +76,12 @@ public class BoardController {
         System.out.println();
 
         return entity;
+    }
+
+    @RequestMapping(value = "/getDetailImg",method = {RequestMethod.GET})
+    public List<String> DetailImg(@RequestParam int bid) throws Exception{
+        System.out.println("getdetailimg"+mapper.getAttach(bid).toString());
+        return mapper.getAttach(bid);
     }
 
     @RequestMapping(value = "/Register", method = { RequestMethod.POST })
@@ -193,4 +201,19 @@ public class BoardController {
 		return new ResponseEntity<String>("deleted", HttpStatus.OK);
 	}
 
+    @RequestMapping(value = "/postComment", method = RequestMethod.POST)
+    public ResponseEntity<?> postComment(@RequestBody CommentDTO commentdto){
+        //jsonobject?
+        System.out.println(commentdto);
+        try{
+            mapper.postComment(commentdto);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+
+    }
+    
 }
