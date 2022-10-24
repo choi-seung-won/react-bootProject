@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.*;
 
 import javax.annotation.Resource;
+import javax.xml.stream.events.Comment;
 import javax.xml.ws.Response;
 
 import org.springframework.http.MediaType;
@@ -202,18 +203,34 @@ public class BoardController {
 	}
 
     @RequestMapping(value = "/postComment", method = RequestMethod.POST)
-    public ResponseEntity<?> postComment(@RequestBody CommentDTO commentdto){
-        //jsonobject?
+    public ResponseEntity<String> postComment(@RequestBody CommentDTO commentdto){
+        ResponseEntity<String> entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         System.out.println(commentdto);
         try{
             mapper.postComment(commentdto);
+            return entity = new ResponseEntity<>(HttpStatus.OK);
         }
         catch(Exception e){
             e.printStackTrace();
         }
 
-        return null;
+        return entity;
 
     }
+
+    @RequestMapping(value="/getCommentDetail", method=RequestMethod.GET)
+    public ResponseEntity<?> getCommentDetail(@RequestParam int bid) {
+        ResponseEntity<?> entity = null;
+
+        try{
+            entity = new ResponseEntity<List<CommentDTO>>(mapper.selectComment(bid),HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+            entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        
+        return entity;
+    }
+    
     
 }

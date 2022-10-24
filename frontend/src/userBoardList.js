@@ -55,11 +55,13 @@ class userBoardList extends Component {
                                 var reg_date = year + '.' + month + '.' + day */
                 result.push(
                     <tr>
-                        <Link to={'Detail/' + data.bid}>
-                            <td>{data.title}</td>
-                            <td>{data.reg_User}</td>
-                            <td>{data.viewcount}</td>
-                        </Link>
+                        <td>
+                            <Link to={'Detail/' + data.bid} style={{ display: 'inline-block' }}>
+                                {data.title}
+                            </Link>
+                        </td>
+                        <td>{data.reg_User}</td>
+                        <td>{data.viewcount}</td>
                     </tr>
                 )
             }
@@ -115,38 +117,44 @@ class userBoardList extends Component {
 
     render() {
         return (
-            <section>
-                {/* <article className="s_cnt mp_pro_li ct1 mp_pro_li_admin">
+            <div className='container' style={{
+                width: "80%",
+                height: "70%",
+                margin: "5%"
+            }}>
+                <section>
+                    {/* <article className="s_cnt mp_pro_li ct1 mp_pro_li_admin">
                     <div className="li_top">
-                        <h2 className="s_tit1"> list of b</h2>
-                        <div className="li_top_sch af">
-                            <Link to={'/Create'} className="sch_bt2 wi_au">register</Link>
-                        </div>
-                        <table className="table_ty2 ad_tlist">
-                            <thead>
-                            <tbody>
-                            {this.state.appendBoardList}
-                            </tbody>
-                            </thead>
-                        </table>
+                    <h2 className="s_tit1"> list of b</h2>
+                    <div className="li_top_sch af">
+                    <Link to={'/Create'} className="sch_bt2 wi_au">register</Link>
+                    </div>
+                    <table className="table_ty2 ad_tlist">
+                    <thead>
+                    <tbody>
+                    {this.state.appendBoardList}
+                    </tbody>
+                    </thead>
+                    </table>
                     </div>
                 </article> */}
-                <article>
-                     <Table striped bordered hover>
-                        <thead>
-                            <tr>
-                                <th>글 제목</th>
-                                <th>등록일</th>
-                                <th>작성자</th>
-                            </tr>
-                        </thead>
+                    <article>
+                        <Table striped bordered hover>
+                            <thead>
+                                <tr>
+                                    <th>글 제목</th>
+                                    <th style={{ width: '10%' }}>작성자</th>
+                                    <th style={{ width: '10%' }}>조회수</th>
+                                </tr>
+                            </thead>
                             <tbody>
-                            {this.state.appendBoardList}
+                                {this.state.appendBoardList}
                             </tbody>
-                    </Table> 
-                    
-                </article>
-            </section>
+                        </Table>
+
+                    </article>
+                </section>
+            </div>
         );
     }
 
