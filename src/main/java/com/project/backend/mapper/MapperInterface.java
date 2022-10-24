@@ -45,4 +45,8 @@ public interface MapperInterface {
     public void postComment(CommentDTO commentdto)throws Exception;
 
     public List<CommentDTO> selectComment(Integer bid) throws Exception;
+
+    public void updateComment(CommentDTO commentdto)throws Exception;
+
+    public void deleteComment(int cno) throws Exception;
  }

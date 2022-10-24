@@ -52,7 +52,14 @@ values(
 )
 </insert>
 <select id = "selectComment" resultType = "com.project.backend.DTO.CommentDTO">
-select * from user_comment where bid = #{bid} 
+select * from user_comment where bid = #{bid} order by cno desc
 </select>
 
+<update id ="updateComment">
+update user_comment set content = #{content} where cno = #{cno}
+</update>
+
+<delete id ="deleteComment">
+delete from user_comment where cno = #{cno}
+</delete>
 </mapper>

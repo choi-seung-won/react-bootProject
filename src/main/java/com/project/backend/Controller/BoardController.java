@@ -231,6 +231,30 @@ public class BoardController {
         
         return entity;
     }
+
+    @RequestMapping(value="/editComment",method = RequestMethod.POST)
+    public ResponseEntity<?> editComment(@RequestBody CommentDTO commentdto){
+        ResponseEntity<?> entity = null;
+        System.out.println("editcomment" + commentdto);
+        try{
+            mapper.updateComment(commentdto);
+            entity = new ResponseEntity<>(HttpStatus.OK);
+        }catch(Exception e){
+            entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return entity;
+    }
     
+    @RequestMapping(value="/deleteComment",method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteComment(int cno){
+        ResponseEntity<?> entity = null;
+        try{
+             mapper.deleteComment(cno);
+             entity = new ResponseEntity<>(HttpStatus.OK);
+        }catch(Exception e){
+            entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return entity;
+    }
     
 }

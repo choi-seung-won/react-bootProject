@@ -56,6 +56,9 @@ class userBoardList extends Component {
                 result.push(
                     <tr>
                         <td>
+                            {data.bid}
+                        </td>
+                        <td>
                             <Link to={'Detail/' + data.bid} style={{ display: 'inline-block' }}>
                                 {data.title}
                             </Link>
@@ -139,19 +142,21 @@ class userBoardList extends Component {
                     </div>
                 </article> */}
                     <article>
-                        <Table striped bordered hover>
-                            <thead>
-                                <tr>
-                                    <th>글 제목</th>
-                                    <th style={{ width: '10%' }}>작성자</th>
-                                    <th style={{ width: '10%' }}>조회수</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {this.state.appendBoardList}
-                            </tbody>
-                        </Table>
-
+                        <div style={{ backgroundColor: '#fff' }} >
+                            <Table striped bordered hover>
+                                <thead>
+                                    <tr>
+                                        <th style={{ width: '10%'}}>글 번호</th>
+                                        <th>글 제목</th>
+                                        <th style={{ width: '10%' }}>작성자</th>
+                                        <th style={{ width: '10%' }}>조회수</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {this.state.appendBoardList}
+                                </tbody>
+                            </Table>
+                        </div>
                     </article>
                 </section>
             </div>
