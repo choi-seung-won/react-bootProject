@@ -8,6 +8,7 @@ import org.json.simple.JSONObject;
 
 import com.project.backend.DTO.BoardDTO;
 import com.project.backend.DTO.CommentDTO;
+import com.project.backend.DTO.FileNameDTO;
 import com.project.backend.DTO.UserDTO;
 
 public interface MapperInterface {
@@ -49,4 +50,6 @@ public interface MapperInterface {
     public void updateComment(CommentDTO commentdto)throws Exception;
 
     public void deleteComment(int cno) throws Exception;
+
+    public List<String> selectrandomimage(int LIMIT) throws Exception;
  }

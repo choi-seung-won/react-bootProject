@@ -89,6 +89,7 @@ public class BoardController {
     public ResponseEntity<String> register(@RequestBody BoardDTO boarddto) {
 
         ResponseEntity<String> entity = null;
+        System.out.println(boarddto);
         try {
             mapper.registerBoard(boarddto);
             System.out.println("boardRegisterSuccess");

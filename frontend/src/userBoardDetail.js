@@ -12,7 +12,8 @@ import BCard from 'react-bootstrap/Card';
 
 const uploadfolername = '\\uploadStorage';
 const container = {
-    width: "80%"
+    width: "80%",
+    marginTop : '100px',
 }
 class userBoardDetail extends Component {
     constructor(props) {
@@ -253,6 +254,7 @@ class userBoardDetail extends Component {
 
     render() {
         return (
+            <div className='page'>
             <div className='container' style={container}>
                 <section>
                     <div>
@@ -327,6 +329,8 @@ class userBoardDetail extends Component {
                         </div>
                     </div>
                 </section>
+            </div>
+                
             </div>
         )
     }

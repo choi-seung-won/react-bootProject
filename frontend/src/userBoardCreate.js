@@ -24,6 +24,16 @@ class userBoardCreate extends Component {
     }
 
     componentDidMount() {
+        if(sessionStorage.getItem('username') == null){
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: "글 작성을 위해서 로그인하시오",
+                showConfirmButton: false,
+                timer: 1000
+            });
+            this.props.history.push('/login');
+        }
         if (this.state.accesscode == 'write') {
 
         } else {
@@ -138,7 +148,9 @@ class userBoardCreate extends Component {
 
             let title = $('#title').val()
             let content = $('#content').val()
-            let author = sessionStorage.getItem('username');
+            var author = sessionStorage.getItem('username');
+            //let선언시에러-state로변경(추후)
+            alert(JSON.stringify({title : title , content : content, reg_User : author}));
             try {
                 const response = await fetch('/board/Register', {
                     method: 'POST',
@@ -162,8 +174,10 @@ class userBoardCreate extends Component {
                             }).then(response => {
                                 //alert(response);
                                 if (response.status == '201') {
+                                    Imgstore = [];
+                                    formData = new FormData();
                                     Swal.fire({
-                                        position: 'bottom-end',
+                                        position: 'center',
                                         icon: 'success',
                                         title: "등록성공",
                                         showConfirmButton: false,
@@ -178,9 +192,21 @@ class userBoardCreate extends Component {
                         } catch (error) {
                             alert(error);
                         }
-                    } else if (response.status == '401') {
-                        alert('401');
+                    } else{
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: "등록성공",
+                            showConfirmButton: false,
+                            timer: 1000
+                        });
+                        setTimeout(function () {
+                            this.props.history.push('/ListAll');
+                        }.bind(this), 1000
+                        )
                     }
+                }else if (response.status == '401') {
+                    alert('401');
                 }
             } catch (error) {
                 alert(error);
@@ -199,10 +225,10 @@ class userBoardCreate extends Component {
                             <div class="form-group">
                         <input class="form-control" type="text" placeholder='title' id = "title" /></div></div></div>
                         <div class="form-group"><textarea id='content' class="form-control" rows="5" placeholder='Comment'></textarea></div>
-                        <label for = 'fileupload' style={{textalign : 'center', position:'center'}} className='btn btn-outline-primary'>upload Image</label>
                         {/* <button style={{textalign : 'center', position:'center'}} className='btn btn-outline-primary' id='fileupload' name='fileupload[]' type='file' onChange={this.onChange} multiple="multiple" accept=".png, .jpg, .jpeg" >이미지 업로드</button> */}
                         <input style={{visibility : 'hidden'}} id='fileupload' name='fileupload[]' type='file' onChange={this.onChange} multiple="multiple" accept=".png, .jpg, .jpeg" />
                         <div class="form-footer"> 
+                        <label htmlFor = 'fileupload' style={{textalign : 'center', position:'center'}} className='btn btn-outline-primary'>upload Image</label>
                         <div id="uploadedList" class='uploadedList' />
                         <div className="btn btn-primary" style={{ textalign: 'center', position: 'center', width: '50%', marginTop: '1%' }} onClick={(e) => this.submitClick('save', e)} >저장</div></div></div></div>
 
