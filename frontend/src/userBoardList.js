@@ -8,7 +8,9 @@ import Pagination from "react-bootstrap-table2-paginator"
 import styled from 'styled-components';
 import Table from 'react-bootstrap/table';
 
-
+const container = {
+    width: "80%"
+}
 class userBoardList extends Component {
 
     constructor(props) {
@@ -26,7 +28,7 @@ class userBoardList extends Component {
     callBoardList = async () => {
         axios.get('/board/getList').then(response => {
             //alert(JSON.stringify(response.data));
-            alert(JSON.stringify(response));
+            //alert(JSON.stringify(response));
             try {
                 this.setState({ responseBoardList: response });
                 this.setState({ appendBoardList: this.BoardListAppend(response) });
@@ -120,11 +122,7 @@ class userBoardList extends Component {
 
     render() {
         return (
-            <div className='container' style={{
-                width: "80%",
-                height: "70%",
-                margin: "5%"
-            }}>
+            <div className='container' style={container}>
                 <section>
                     {/* <article className="s_cnt mp_pro_li ct1 mp_pro_li_admin">
                     <div className="li_top">

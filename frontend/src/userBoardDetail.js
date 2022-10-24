@@ -8,6 +8,7 @@ import Modal from 'react-modal';
 import BModal from 'react-bootstrap/Modal';
 import BButton from 'react-bootstrap/Button';
 import BForm from 'react-bootstrap/Form';
+import BCard from 'react-bootstrap/Card';
 
 const uploadfolername = '\\uploadStorage';
 const container = {
@@ -103,8 +104,19 @@ class userBoardDetail extends Component {
     }
 
     functionfrag = (e) => {
-        this.setState({modalState : true})
-        this.setState({modalCno : e});
+        this.setState({ modalState: true })
+        this.setState({ modalCno: e });
+    }
+
+    deletefunction = (e) => {
+        let cno = parseInt(e);
+        parseInt(cno);
+        alert(cno)
+        axios.delete('/board/deleteComment', {
+            params: { cno: cno }
+        }).then(
+            this.callCommentDetail
+        )
     }
 
     CDetailLoader = (body) => {
@@ -123,9 +135,9 @@ class userBoardDetail extends Component {
                             {data.content}
                         </td>
                         <td id={data.cno} style={{ width: '5%', textAlign: 'right' }} >
-                            <i class="fe fe-navigation" onClick={this.functionfrag.bind(this,data.cno)}
-                            /* {() => this.setState({ modalState: true })} */ 
-                            ></i>
+                            <i class="fe fe-navigation" onClick={this.functionfrag.bind(this, data.cno)}
+                            >수정</i>
+                            <i className="fe fe-x-square" onClick={this.deletefunction.bind(this, data.cno)} >삭제</i>
                         </td>
                     </tr>
                 )
@@ -150,28 +162,28 @@ class userBoardDetail extends Component {
     editComment = () => {
         let content = this.state.modalContent;
         axios({
-            method : 'POST',
-            url : '/board/editComment',
-            headers : {
+            method: 'POST',
+            url: '/board/editComment',
+            headers: {
                 'Content-Type': 'application/json',
             },
             data: JSON.stringify({
                 content: content,
                 cno: this.state.modalCno,
                 username: sessionStorage.getItem('username'),
-                bid : this.state.before_Boardid
+                bid: this.state.before_Boardid
             })
         }).then(response => {
             //alert(JSON.stringify(response))
             if (response.status == "200") {
                 Swal.fire({
-                    position: 'bottom-end',
+                    position: 'center',
                     icon: 'success',
                     title: '등록완료',
                     showConfirmButton: true,
                     timer: 1000
                 })
-                this.setState({modalState : false});
+                this.setState({ modalState: false });
                 this.callCommentDetail();
             } else (
                 alert('error')
@@ -202,17 +214,18 @@ class userBoardDetail extends Component {
                 const body = response.status;
                 if (body == '200') {
                     Swal.fire({
-                        position: 'bottom-end',
+                        position: 'center',
                         icon: 'success',
                         title: '등록완료',
                         showConfirmButton: 'false',
                         timer: 1000
                     }
                     )
+                    $('#commentarea').val('');
                     this.callCommentDetail();
                 } else {
                     Swal.fire({
-                        position: 'bottom-end',
+                        position: 'center',
                         icon: 'error',
                         title: 'error',
                         showConfirmButton: 'false',
@@ -242,14 +255,18 @@ class userBoardDetail extends Component {
         return (
             <div className='container' style={container}>
                 <section>
-                    <input type="text" name="title" id="title"></input>
-                    <input type="text" name="content" id="content"></input>
-                    <input type="text" name="author" id="author"></input>
-                    <div><span id="imglist"></span></div>
-
-
+                    <div>
+                        <BCard>
+                            <BCard.Header as="h5" >{this.state.title} {this.state.author}</BCard.Header>
+                            <div><span id="imglist"></span></div>
+                            <BCard.Body>
+                                <BCard.Text>{this.state.content}</BCard.Text>
+                            </BCard.Body>
+                        </BCard>
+                    </div>
                     <div className='ComponentDemo'>
-                        <Form.FieldSet>
+
+                        {/* <Form.FieldSet>
                             <Form.Group
                                 isRequired label="Author"
                             />
@@ -258,7 +275,7 @@ class userBoardDetail extends Component {
                                 isRequired label="content"
                             />
                             <Form.Input name="examplecontent" />
-                        </Form.FieldSet>
+                        </Form.FieldSet> */}
                     </div>
                     {this.renderSwitch()}
 

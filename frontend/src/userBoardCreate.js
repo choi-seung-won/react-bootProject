@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from "axios";
 import $, { extend } from 'jquery';
 import Swal from 'sweetalert2'
+import { Container } from 'tabler-react';
 
 //if you use react class as component you can't use variables inside ,because classes are objects
 //If you have class based component, then you can define the variable outside the class (before the class definition).
@@ -133,15 +134,19 @@ class userBoardCreate extends Component {
             jsonstr = decodeURIComponent(jsonstr);
             var Json_form = JSON.stringify(jsonstr).replace(/\"/gi, '')
             Json_form = "{\"" + Json_form.replace(/\&/g, '\",\"').replace(/=/gi, '\":"') + "\"}";
+            //alert(jsonstr);
 
-            alert(jsonstr);
+            let title = $('#title').val()
+            let content = $('#content').val()
+            let author = sessionStorage.getItem('username');
             try {
                 const response = await fetch('/board/Register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: Json_form,
+                    body: JSON.stringify({title : title , content : content, reg_User : author})
+                    //Json_form,
                 });
                 if (response.status == '200') {
                     if (Imgstore.length >= 1) {
@@ -156,17 +161,17 @@ class userBoardCreate extends Component {
                                 headers: { 'content-type': 'multipart/form-data' },
                             }).then(response => {
                                 //alert(response);
-                                if(response.status =='201'){
+                                if (response.status == '201') {
                                     Swal.fire({
-                                        position : 'bottom-end',
+                                        position: 'bottom-end',
                                         icon: 'success',
                                         title: "등록성공",
                                         showConfirmButton: false,
                                         timer: 1000
                                     });
-                                    setTimeout(function(){
+                                    setTimeout(function () {
                                         this.props.history.push('/ListAll');
-                                    }.bind(this),1000
+                                    }.bind(this), 1000
                                     )
                                 }
                             })
@@ -187,24 +192,35 @@ class userBoardCreate extends Component {
 
     render() {
         return (
-            <section>
-                <article>
-                    <div>
-                        <h2>등록/수정</h2>
-                    </div>
-                    <div>
-                        <form name="frm" id="frm" action="" onSubmit="" method="post">
-                            <input id="username" value={this.state.username} readOnly />
-                            <input id="title" name="title" placeholder='title' />
-                            <input id="content" name="content" placeholder='content' />
-                            <input id='fileupload' name='fileupload[]' type='file' onChange={this.onChange} multiple="multiple" accept=".png, .jpg, .jpeg" />
-                            <div className="btn_confirm" >
-                                <div className='bt_ty bt_ty2 submit_ty1' onClick={(e) => this.submitClick('save', e)}>저장</div>
-                            </div>
-                        </form>
+            <section style={{marginTop: '2.5%'}}>
+                <Container fluid className="p-0">
+                    <article>
+                        <div class="card"><div class="card-header"><h3 class="card-title">새 글 작성</h3></div><div class="card-body"><div class="row row"><div class="col">
+                            <div class="form-group">
+                        <input class="form-control" type="text" placeholder='title' id = "title" /></div></div></div>
+                        <div class="form-group"><textarea id='content' class="form-control" rows="5" placeholder='Comment'></textarea></div>
+                        <label for = 'fileupload' style={{textalign : 'center', position:'center'}} className='btn btn-outline-primary'>upload Image</label>
+                        {/* <button style={{textalign : 'center', position:'center'}} className='btn btn-outline-primary' id='fileupload' name='fileupload[]' type='file' onChange={this.onChange} multiple="multiple" accept=".png, .jpg, .jpeg" >이미지 업로드</button> */}
+                        <input style={{visibility : 'hidden'}} id='fileupload' name='fileupload[]' type='file' onChange={this.onChange} multiple="multiple" accept=".png, .jpg, .jpeg" />
+                        <div class="form-footer"> 
                         <div id="uploadedList" class='uploadedList' />
-                    </div>
-                </article>
+                        <div className="btn btn-primary" style={{ textalign: 'center', position: 'center', width: '50%', marginTop: '1%' }} onClick={(e) => this.submitClick('save', e)} >저장</div></div></div></div>
+
+
+                        {/* <div>
+                            <form name="frm" id="frm" action="" onSubmit="" method="post">
+                                <input id="username" value={this.state.username} readOnly />
+                                <input id="title" name="title" placeholder='title' />
+                                <input id="content" name="content" placeholder='content' />
+                                <input id='fileupload' name='fileupload[]' type='file' onChange={this.onChange} multiple="multiple" accept=".png, .jpg, .jpeg" />
+                                <div className="btn_confirm" >
+                                </div>
+                            </form>
+                            <div id="uploadedList" class='uploadedList' />
+                            <div className="btn btn-primary" style={{ textalign: 'center', position: 'center', width: '30%', marginTop: '5%' }} onClick={(e) => this.submitClick('save', e)}>저장</div>
+                        </div> */}
+                    </article>
+                </Container>
             </section>
         )
     }

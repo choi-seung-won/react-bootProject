@@ -246,7 +246,7 @@ public class BoardController {
     }
     
     @RequestMapping(value="/deleteComment",method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteComment(int cno){
+    public ResponseEntity<?> deleteComment(@RequestParam int cno){
         ResponseEntity<?> entity = null;
         try{
              mapper.deleteComment(cno);
