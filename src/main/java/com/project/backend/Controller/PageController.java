@@ -43,4 +43,21 @@ public class PageController {
         }
         return entity;
     }
+
+    @RequestMapping(value="/selecttoptenBoard", method=RequestMethod.GET)
+    public ResponseEntity<?> selecttoptenBoard() {
+        
+        ResponseEntity<?> entity = null;
+
+        try{
+            List<BoardDTO> listedboarddto = mapper.selecttoptenBoard();
+            entity = new ResponseEntity<List<BoardDTO>>(listedboarddto,HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+            entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        
+        return entity;
+    }
+    
 }

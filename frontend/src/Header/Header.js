@@ -78,7 +78,7 @@ class Header extends Component {
             return <tabler.AccountDropdown
             avatarURL="./demo/faces/female/25.jpg"
             name={this.state.username}
-            description="Administrator"
+            description="로그아웃 상태입니다."
             options={[
                 { icon: "user", value: "Login", to: "/login" },
                 { icon: "settings", value: "Signin", to: "/Register"},

@@ -68,4 +68,8 @@ delete from user_comment where cno = #{cno}
 select filename from filename_tbl order by rand() Limit ${LIMIT};
 </select>
 
+<select id = "selecttoptenBoard" resultType = "com.project.backend.DTO.BoardDTO">
+select * from userBoard order by viewcount desc Limit 10;
+</select>
+
 </mapper>

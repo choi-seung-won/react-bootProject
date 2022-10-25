@@ -52,4 +52,6 @@ public interface MapperInterface {
     public void deleteComment(int cno) throws Exception;
 
     public List<String> selectrandomimage(int LIMIT) throws Exception;
+
+    public List<BoardDTO> selecttoptenBoard() throws Exception;
  }
