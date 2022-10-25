@@ -54,4 +54,6 @@ public interface MapperInterface {
     public List<String> selectrandomimage(int LIMIT) throws Exception;
 
     public List<BoardDTO> selecttoptenBoard() throws Exception;
+
+    public List<BoardDTO> dailyBoard() throws Exception;
  }

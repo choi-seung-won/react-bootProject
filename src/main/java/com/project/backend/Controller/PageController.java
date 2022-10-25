@@ -59,5 +59,20 @@ public class PageController {
         
         return entity;
     }
+
+    @RequestMapping(value="/dailyBoard",method= RequestMethod.GET)
+    public ResponseEntity<?> dailyBoard(){
+
+        ResponseEntity<?> entity = null;
+
+        try{
+            List<BoardDTO> listedboarddto = mapper.dailyBoard();
+            entity = new ResponseEntity<List<BoardDTO>>(listedboarddto, HttpStatus.OK);
+
+        }catch(Exception e){
+            entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return entity;
+    }
     
 }

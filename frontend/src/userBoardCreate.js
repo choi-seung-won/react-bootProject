@@ -90,7 +90,7 @@ class userBoardCreate extends Component {
                 return;
             }
             Imgstore.push(f);
-            alert(Imgstore.length);
+            //alert(Imgstore.length);
             console.log('foundfile=' + f.name);
 
             let reader = new FileReader();
@@ -124,14 +124,26 @@ class userBoardCreate extends Component {
         this.fnValidate = (e) => {
             if (this.title_checker === '') {
                 $('#title').addClass('border_validate.err');
-                alert('checktitleplz')
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: "제목을 입력해주세요",
+                    showConfirmButton: false,
+                    timer: 1000
+                });
                 return false;
             }
             $('#title').removeClass('border_validate_err');
 
             if (this.content_checker === '') {
                 $('#content').addClass('border_validate_err');
-                alert('checkcontentplz')
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: "내용을 입력해주세요.",
+                    showConfirmButton: false,
+                    timer: 1000
+                });
                 return false;
             }
             $('#content').removeClass('border_validate_err');
@@ -150,7 +162,7 @@ class userBoardCreate extends Component {
             let content = $('#content').val()
             var author = sessionStorage.getItem('username');
             //let선언시에러-state로변경(추후)
-            alert(JSON.stringify({title : title , content : content, reg_User : author}));
+            //alert(JSON.stringify({title : title , content : content, reg_User : author}));
             try {
                 const response = await fetch('/board/Register', {
                     method: 'POST',
@@ -221,10 +233,10 @@ class userBoardCreate extends Component {
             <section style={{marginTop: '2.5%'}}>
                 <Container fluid className="p-0">
                     <article>
-                        <div class="card"><div class="card-header"><h3 class="card-title">새 글 작성</h3></div><div class="card-body"><div class="row row"><div class="col">
+                        <div class="card" style={{minHeight : '500px'}}><div class="card-header"><h3 class="card-title">새 글 작성</h3></div><div class="card-body"><div class="row row"><div class="col">
                             <div class="form-group">
                         <input class="form-control" type="text" placeholder='title' id = "title" /></div></div></div>
-                        <div class="form-group"><textarea id='content' class="form-control" rows="5" placeholder='Comment'></textarea></div>
+                        <div class="form-group"><textarea id='content' class="form-control" rows="20" placeholder='Comment'></textarea></div>
                         {/* <button style={{textalign : 'center', position:'center'}} className='btn btn-outline-primary' id='fileupload' name='fileupload[]' type='file' onChange={this.onChange} multiple="multiple" accept=".png, .jpg, .jpeg" >이미지 업로드</button> */}
                         <input style={{visibility : 'hidden'}} id='fileupload' name='fileupload[]' type='file' onChange={this.onChange} multiple="multiple" accept=".png, .jpg, .jpeg" />
                         <div class="form-footer"> 

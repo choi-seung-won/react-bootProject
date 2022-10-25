@@ -4,6 +4,8 @@ import axios from "axios";
 import Swal from 'sweetalert2'
 import $, { post } from 'jquery';
 import SimpleImageSlider from 'react-simple-image-slider';
+import { BlogCard, Grid } from 'tabler-react';
+import {format} from 'date-fns';
 
 const uploadfoldername = '/uploadStorage';
 //let imageList = [];
@@ -16,7 +18,7 @@ const container = {
     height: "100%"
 }
 const c3Style = {
-    height:'10rem' , position : 'relative'
+    height: '10rem', position: 'relative'
 }
 class mainPage extends Component {
     //historyclear
@@ -25,15 +27,15 @@ class mainPage extends Component {
         { url: "/uploadStorage/2022/10/21/878f91b5-c4ef-4650-8721-47e9fd20528b_1lilbub-690x690.jpg" }];
         super(props);
         this.state = {
-            
+            randomBoardList : '',
             BoardList: '',
             tempstorage: [],
             imgslider: <SimpleImageSlider
                 width={900}
-                height={378}
+                height={300}
                 showNavs={true}
                 images={sample}
-                navStyle={1}
+                navStyle={2}
                 navMargin={30}
                 showBullets={true}
                 autoPlay={true}
@@ -46,6 +48,38 @@ class mainPage extends Component {
     componentDidMount() {
         this.callRandomImage()
         this.callTopTenBoardList()
+        this.callDailyBoard()
+    }
+
+    callDailyBoard = async e => {
+        axios.get('/dailyBoard').then(
+            response => {
+                try {
+                    console.log(response)
+                    let result = []
+                    var BList = response.data;
+                    if (BList && BList.length > 0) {
+                        for (let i = 0; i < BList.length; i++) {
+                            let data = BList[i];
+                            console.log(data);
+                            let redi = 'Detail/' + data.bid;
+                            
+                            result.push(<BlogCard
+                                title={data.title}
+                                description={data.content}
+                                authorName={data.reg_User}
+                                date="금일중"
+                                iconName="chevrons-right"
+                                iconHref={'/Detail/'+ data.bid}
+                            /> )
+                            this.setState({randomBoardList : result})
+                        }
+                    }
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+        )
     }
 
     callTopTenBoardList = async e => {
@@ -66,8 +100,8 @@ class mainPage extends Component {
                                         {data.reg_User}
                                     </td>
                                     <td>
-                                        <Link to = {'Detail/' + data.bid}>
-                                        {data.title}
+                                        <Link to={'Detail/' + data.bid}>
+                                            {data.title}
                                         </Link>
                                     </td>
                                     <td>
@@ -77,7 +111,7 @@ class mainPage extends Component {
                             )
                         }
                     }
-                    this.setState({BoardList : result});
+                    this.setState({ BoardList: result });
                 } catch (error) {
                     console.log(error);
                 }
@@ -93,7 +127,7 @@ class mainPage extends Component {
                 //alert(JSON.stringify(response))
                 for (let i = 0; i < response.data.length; i++) {
                     var data = '/uploadStorage'
-                    data += JSON.stringify(response.data[i]).replace(/^["'](.+(?=["']$))["']$/, '$1').replace('s_',"");
+                    data += JSON.stringify(response.data[i]).replace(/^["'](.+(?=["']$))["']$/, '$1').replace('s_', "");
                     //alert(data);
                     var tempObj = {};
                     tempObj['url'] = data;
@@ -132,47 +166,69 @@ class mainPage extends Component {
         return <div className='container' style={container}>
             <div className='row row' style={{ marginTop: '5%' }}>
                 <div className='col col-lg8 card'>
+                    <div className='card-header' >
+                        <h4 style={{ margin: '2.5%' }}>유저들에 의해 리뷰된 이미지들입니다.</h4>
+                    </div>
                     <div style={{ marginLeft: '10%', marginTop: '2.5%', marginBottom: '2.5%' }}>
                         {this.state.imgslider}
                     </div>
                 </div>
             </div>
-                
-                <div className="col col-lg-6" style={{height : '600px'}}>
 
-                <div className='card' style={{height : '600px'}}>
+            <div className="col" style={{ display: 'flex', justifyContent: 'center', boxSizing: 'border-box', height: '600px', width: '100%' }}>
+
+                <div className='card' style={{ height: '600px' }}>
 
                     <div className='card-header'>
-                            <h3 className='card-title'>Highly Spotted</h3>
+                        <h3 className='card-title'>최근 주목되는 리뷰</h3>
                     </div>
-                    
+
                     <div className='c3' style={c3Style}>
                         <div className='table-responsive'>
                             <table className='table card-table table-striped table-vcenter'>
                                 <thead>
                                     <tr>
                                         <th>
-                                            Writer
+                                            작성자
                                         </th>
                                         <th>
-                                            Title
+                                            제목
                                         </th>
                                         <th>
-                                            ViewCount
+                                            조회수
                                         </th>
                                     </tr>
                                 </thead>
-                                
+
                                 {this.state.BoardList}
                                 <tbody>
-                                    
+
                                 </tbody>
 
                             </table>
                         </div>
                     </div>
                 </div>
+                <div id='temp' className='col col-md-7'>
+                    <h5>금일 업로드된 작성글.</h5>
+                    {/* <div style={{ position: 'relative' }}>
+
+                        <BlogCard
+                            title="And this isn't my nose. This is a false one."
+                            postUrl="#"
+                            description="Look, my liege! The Knights Who Say Ni demand a sacrifice! …Are you suggesting that coconuts migr..."
+                            authorName="Rose Bradley"
+                            profileHref="/profile.html"
+                            date="3 days ago"
+                            iconName="chevrons-right"
+                            iconHref="#"
+                            aside="true"
+                        />
+                    </div> */}
+                    {this.state.randomBoardList}
                 </div>
+
+            </div>
         </div>
     }
 }

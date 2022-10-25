@@ -16,7 +16,12 @@ class Footer extends Component{
 
     render(){
 
-        return <div class="container" style={{background : '#fff', borderTop : '1px solid', fontSize : '0.875rem' , padding : '1.25rem', color : '#9aa0ac' , marginTop : '2.5%'}}>
+        return <div class="container" /* style={{backgroundcolor: '#242424',
+            padding: '4rem 0 2rem 0',
+            display: 'flex',
+            flexdirection: 'column',
+            justifycontent: 'center',
+            alignitems: 'center'}} */ style={{background : '#fff', borderTop : '1px solid', fontSize : '0.875rem' , padding : '1.25rem', color : '#9aa0ac' , marginTop : '2.5%'}} >
             <div class="row row align-items-center flex-row-reverse">
                 <div class="col col-auto ml-auto">
                     <div class="row row align-items-center">

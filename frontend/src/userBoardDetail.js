@@ -12,8 +12,9 @@ import BCard from 'react-bootstrap/Card';
 
 const uploadfolername = '\\uploadStorage';
 const container = {
+    height : "80%",
     width: "80%",
-    marginTop : '100px',
+
 }
 class userBoardDetail extends Component {
     constructor(props) {
@@ -256,7 +257,7 @@ class userBoardDetail extends Component {
         return (
             <div className='page'>
             <div className='container' style={container}>
-                <section>
+                <section style={container}>
                     <div>
                         <BCard>
                             <BCard.Header as="h5" >{this.state.title} {this.state.author}</BCard.Header>
