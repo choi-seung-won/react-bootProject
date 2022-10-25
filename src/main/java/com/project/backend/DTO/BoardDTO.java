@@ -13,4 +13,6 @@ public class BoardDTO {
     private Date update_Date;
     private String update_User;
     private String viewcount;
+    private Date dform;//date_format
+
 }

@@ -11,6 +11,7 @@ import Table from 'react-bootstrap/table';
 const container = {
     width: "80%"
 }
+
 class userBoardList extends Component {
 
     constructor(props) {
@@ -18,11 +19,35 @@ class userBoardList extends Component {
         this.state = {
             responseBoardList: '',
             appendBoardList: '',
+            searchStatus: '',
+            value : '',
         }
+        this.onSearch = this.onSearch.bind(this);
     }
 
     componentDidMount() {
         this.callBoardList()
+    }
+
+    onSearchChange = (e) => {
+        e.preventDefault();
+        this.setState({searchStatus : e.target.value});
+    }
+
+    onSearch = async (e) => {
+        e.preventDefault();
+        let search = this.state.searchStatus;
+        alert('okas')
+        try{
+            axios.get('/board/searchBoard',{
+                params : { keyword: this.state.searchStatus}
+            }).then(response => {
+ //               this.state({searchStatus})
+                console.log(response);
+            })
+        }catch(error){
+            console.log(error);
+        }
     }
 
     callBoardList = async () => {
@@ -141,6 +166,11 @@ class userBoardList extends Component {
                 </article> */}
                     <article>
                         <div style={{ backgroundColor: '#fff' }} >
+                            <div>
+                                <input type="text" value={this.state.searchStatus} onChange = {this.onSearchChange} />
+                                <button type="button" onClick={(e) => this.onSearch(e)} >search</button>
+                            <p>{this.state.searchStatus}</p>
+                            </div>
                             <Table striped bordered hover>
                                 <thead>
                                     <tr>
@@ -162,4 +192,5 @@ class userBoardList extends Component {
     }
 
 }
+
 export default userBoardList;

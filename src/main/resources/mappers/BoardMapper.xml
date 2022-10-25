@@ -73,7 +73,12 @@ select * from userBoard order by viewcount desc Limit 10;
 </select>
 
 <select id = "dailyBoard" resultType = "com.project.backend.DTO.BoardDTO">
-select *,date_format(userBoard.reg_Date,'%Y-%m-%d') from userBoard where DATE(reg_Date) = curdate() order by rand() limit 3
+select *,date_format(userBoard.reg_Date,'%Y-%m-%d')as dform from userBoard where DATE(reg_Date) = curdate() order by rand() limit 3
 </select>
 
+<select id ="searchBoard" resultType = "com.project.backend.DTO.BoardDTO">
+<!-- <bind name="pattern" value="'%' + #{test} + '%'" />
+ -->
+ select * from userBoard where title Like '%${keyword}%'
+</select>
 </mapper>

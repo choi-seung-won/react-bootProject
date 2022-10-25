@@ -56,4 +56,6 @@ public interface MapperInterface {
     public List<BoardDTO> selecttoptenBoard() throws Exception;
 
     public List<BoardDTO> dailyBoard() throws Exception;
+
+    public List<BoardDTO> searchBoard(String keyword) throws Exception;
  }
