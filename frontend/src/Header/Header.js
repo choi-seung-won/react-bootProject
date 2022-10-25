@@ -78,7 +78,7 @@ class Header extends Component {
             return <tabler.AccountDropdown
             avatarURL="./demo/faces/female/25.jpg"
             name={this.state.username}
-            description="Administrator"
+            description="로그아웃 상태입니다."
             options={[
                 { icon: "user", value: "Login", to: "/login" },
                 { icon: "settings", value: "Signin", to: "/Register"},
@@ -110,7 +110,7 @@ class Header extends Component {
         }
         
         return (
-            <header>
+            <header style={{marginBottom : "2.5%"}}>
              <div class="header py-4"><div class="container"><div class="d-flex"><a class="header-brand" href="/"></a><div class="d-flex order-lg-2 ml-auto">
 
             {this.renderSwitch(this.state.username)}
@@ -122,8 +122,8 @@ class Header extends Component {
                             <div className='col-lg-3 ml-auto'></div>
                             <div className='col col-lg order-lg-first'>
                                 <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
-                                    <li class="nav-item"><a class="nav-link"  href="/"><i class="fe fe-home"></i> Home</a></li>
-                                    <li class="nav-item"><a class="nav-link"><i class="fe fe-box" ></i><Link to={'/Create'}> Create</Link></a></li><li class="nav-item"><a class="nav-link"><i class="fe fe-calendar"></i> <Link to={'/ListAll'} >ListAll</Link></a></li><li class="nav-item"><a class="nav-link"><i class="fe fe-file"></i> Pages</a></li><li class="nav-item"><a class="nav-link" history="[object Object]" match="[object Object]" href="/form-elements"><i class="fe fe-check-square"></i> Forms</a></li><li class="nav-item"><a class="nav-link" history="[object Object]" match="[object Object]" href="/gallery"><i class="fe fe-image"></i> Gallery</a></li><li class="nav-item"><a class="nav-link" href="/"><i class="fe fe-file-text"></i> Documentation</a></li></ul>
+                                    <li class="nav-item"><a class="nav-link"  href="/"><i class="fe fe-home"></i> 메인화면</a></li>
+                                    <li class="nav-item"><a class="nav-link"><i class="fe fe-box" ></i><Link to={'/Create'}> 글 작성</Link></a></li><li class="nav-item"><a class="nav-link"><i class="fe fe-calendar"></i> <Link to={'/ListAll'} >게시글 목록</Link></a></li><li class="nav-item"><a class="nav-link"><i class="fe fe-file"></i> 세부사항</a></li><li class="nav-item"><a class="nav-link" history="[object Object]" match="[object Object]" href="/form-elements"><i class="fe fe-check-square"></i> 마이페이지</a></li></ul>
                             </div>
                         </div>
 

@@ -7,11 +7,13 @@ INSERT INTO react.userboard
 (
     title,
     content,
+    reg_User,
     reg_Date
 )
 VALUES (
     #{title},
     #{content},
+    #{reg_User},
     now()
 )
 </insert>
@@ -52,7 +54,26 @@ values(
 )
 </insert>
 <select id = "selectComment" resultType = "com.project.backend.DTO.CommentDTO">
-select * from user_comment where bid = #{bid} 
+select * from user_comment where bid = #{bid} order by cno desc
+</select>
+
+<update id ="updateComment">
+update user_comment set content = #{content} where cno = #{cno}
+</update>
+
+<delete id ="deleteComment">
+delete from user_comment where cno = #{cno}
+</delete>
+<select id ="selectrandomimage" resultType = "String">
+select filename from filename_tbl order by rand() Limit ${LIMIT};
+</select>
+
+<select id = "selecttoptenBoard" resultType = "com.project.backend.DTO.BoardDTO">
+select * from userBoard order by viewcount desc Limit 10;
+</select>
+
+<select id = "dailyBoard" resultType = "com.project.backend.DTO.BoardDTO">
+select *,date_format(userBoard.reg_Date,'%Y-%m-%d') from userBoard where DATE(reg_Date) = curdate() order by rand() limit 3
 </select>
 
 </mapper>

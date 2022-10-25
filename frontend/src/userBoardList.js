@@ -8,7 +8,9 @@ import Pagination from "react-bootstrap-table2-paginator"
 import styled from 'styled-components';
 import Table from 'react-bootstrap/table';
 
-
+const container = {
+    width: "80%"
+}
 class userBoardList extends Component {
 
     constructor(props) {
@@ -26,7 +28,7 @@ class userBoardList extends Component {
     callBoardList = async () => {
         axios.get('/board/getList').then(response => {
             //alert(JSON.stringify(response.data));
-            alert(JSON.stringify(response));
+            //alert(JSON.stringify(response));
             try {
                 this.setState({ responseBoardList: response });
                 this.setState({ appendBoardList: this.BoardListAppend(response) });
@@ -55,6 +57,9 @@ class userBoardList extends Component {
                                 var reg_date = year + '.' + month + '.' + day */
                 result.push(
                     <tr>
+                        <td>
+                            {data.bid}
+                        </td>
                         <td>
                             <Link to={'Detail/' + data.bid} style={{ display: 'inline-block' }}>
                                 {data.title}
@@ -117,11 +122,7 @@ class userBoardList extends Component {
 
     render() {
         return (
-            <div className='container' style={{
-                width: "80%",
-                height: "70%",
-                margin: "5%"
-            }}>
+            <div className='container' style={container}>
                 <section>
                     {/* <article className="s_cnt mp_pro_li ct1 mp_pro_li_admin">
                     <div className="li_top">
@@ -139,19 +140,21 @@ class userBoardList extends Component {
                     </div>
                 </article> */}
                     <article>
-                        <Table striped bordered hover>
-                            <thead>
-                                <tr>
-                                    <th>글 제목</th>
-                                    <th style={{ width: '10%' }}>작성자</th>
-                                    <th style={{ width: '10%' }}>조회수</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {this.state.appendBoardList}
-                            </tbody>
-                        </Table>
-
+                        <div style={{ backgroundColor: '#fff' }} >
+                            <Table striped bordered hover>
+                                <thead>
+                                    <tr>
+                                        <th style={{ width: '10%'}}>글 번호</th>
+                                        <th>글 제목</th>
+                                        <th style={{ width: '10%' }}>작성자</th>
+                                        <th style={{ width: '10%' }}>조회수</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {this.state.appendBoardList}
+                                </tbody>
+                            </Table>
+                        </div>
                     </article>
                 </section>
             </div>

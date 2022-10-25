@@ -13,6 +13,7 @@ import cookie from 'react-cookies';
 import axios from "axios";
 
 import HeaderAdmin from './Header/Header.js'
+import Footer from './Footer/Footer.js';
 
 //TestPage
 import TestPage from './TestPage';
@@ -26,6 +27,9 @@ import userCreatePage from './userBoardCreate';
 import userBoardList from './userBoardList';
 //userBoardDetail
 import userBoardDetail from './userBoardDetail';
+
+//mainPage
+import mainPage from './MainPage';
 
 class App extends Component {
 constructor(props){
@@ -67,12 +71,14 @@ render () {
   return (
     <div className="App">
       <HeaderAdmin />
+              <Route exact path='/' component={mainPage} />
               <Route path='/Test' component={TestPage} />
               <Route path='/login' component={LoginPage} />
               <Route path='/Register' component={RegisterPage} />
               <Route path='/Create' component={userCreatePage} />
               <Route path='/ListAll' component={userBoardList} />
               <Route path='/Detail/:bid' component={userBoardDetail} />
+        <Footer/>
     </div>
   );
 }

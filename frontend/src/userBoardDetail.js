@@ -2,12 +2,19 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import Swal from 'sweetalert2'
-import $ from 'jquery';
-import { Form } from 'tabler-react';
+import $, { post } from 'jquery';
+import { Button, Form } from 'tabler-react';
+import Modal from 'react-modal';
+import BModal from 'react-bootstrap/Modal';
+import BButton from 'react-bootstrap/Button';
+import BForm from 'react-bootstrap/Form';
+import BCard from 'react-bootstrap/Card';
 
 const uploadfolername = '\\uploadStorage';
-const container ={
-    width: "80%"
+const container = {
+    height : "80%",
+    width: "80%",
+
 }
 class userBoardDetail extends Component {
     constructor(props) {
@@ -22,8 +29,12 @@ class userBoardDetail extends Component {
                     There are no comments!
                 </td>
             </tr>,
+            modalState: false,
+            modalCno: '',
+            modalContent: '',
         }
         this.onclickfunction = this.onclickfunction.bind(this);
+        this.editComment = this.editComment.bind(this);
     }
 
     componentDidMount() {
@@ -94,24 +105,92 @@ class userBoardDetail extends Component {
         )
     }
 
+    functionfrag = (e) => {
+        this.setState({ modalState: true })
+        this.setState({ modalCno: e });
+    }
+
+    deletefunction = (e) => {
+        let cno = parseInt(e);
+        parseInt(cno);
+        alert(cno)
+        axios.delete('/board/deleteComment', {
+            params: { cno: cno }
+        }).then(
+            this.callCommentDetail
+        )
+    }
+
     CDetailLoader = (body) => {
         let result = []
         let ListedItem = body;
-        //alert(ListedItem)
         for (let i = 0; i < ListedItem.length; i++) {
             var data = ListedItem[i];
-            result.push(
-                <tr>
-                    <td style={{width : '10%'}}>
-                        {data.username}
-                    </td>
-                    <td>
-                        {data.content}
-                    </td>
-                </tr>
-            )
-            return result;
+            //alert(JSON.stringify(data));
+            if (data.username == sessionStorage.getItem('username')) {
+                result.push(
+                    <tr>
+                        <td style={{ width: '10%' }}>
+                            {data.username}
+                        </td>
+                        <td>
+                            {data.content}
+                        </td>
+                        <td id={data.cno} style={{ width: '5%', textAlign: 'right' }} >
+                            <i class="fe fe-navigation" onClick={this.functionfrag.bind(this, data.cno)}
+                            >수정</i>
+                            <i className="fe fe-x-square" onClick={this.deletefunction.bind(this, data.cno)} >삭제</i>
+                        </td>
+                    </tr>
+                )
+            } else {
+                result.push(
+                    <tr>
+                        <td style={{ width: '10%' }}>
+                            {data.username}
+                        </td>
+                        <td>
+                            {data.content}
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                )
+            }
         }
+        return result;
+    }
+
+    editComment = () => {
+        let content = this.state.modalContent;
+        axios({
+            method: 'POST',
+            url: '/board/editComment',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({
+                content: content,
+                cno: this.state.modalCno,
+                username: sessionStorage.getItem('username'),
+                bid: this.state.before_Boardid
+            })
+        }).then(response => {
+            //alert(JSON.stringify(response))
+            if (response.status == "200") {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: '등록완료',
+                    showConfirmButton: true,
+                    timer: 1000
+                })
+                this.setState({ modalState: false });
+                this.callCommentDetail();
+            } else (
+                alert('error')
+            )
+        })
     }
 
     onclickfunction = async () => {
@@ -137,16 +216,18 @@ class userBoardDetail extends Component {
                 const body = response.status;
                 if (body == '200') {
                     Swal.fire({
-                        position: 'bottom-end',
+                        position: 'center',
                         icon: 'success',
                         title: '등록완료',
                         showConfirmButton: 'false',
                         timer: 1000
                     }
                     )
+                    $('#commentarea').val('');
+                    this.callCommentDetail();
                 } else {
                     Swal.fire({
-                        position: 'bottom-end',
+                        position: 'center',
                         icon: 'error',
                         title: 'error',
                         showConfirmButton: 'false',
@@ -174,53 +255,87 @@ class userBoardDetail extends Component {
 
     render() {
         return (
+            <div className='page'>
             <div className='container' style={container}>
-            <section>
-
-                <input type="text" name="title" id="title"></input>
-                <input type="text" name="content" id="content"></input>
-                <input type="text" name="author" id="author"></input>
-                <div><span id="imglist"></span></div>
-
-
-                <div className='ComponentDemo'>
-                    <Form.FieldSet>
-                        <Form.Group
-                            isRequired label="Author"
-                        />
-                        <Form.Input name="exampleauth" />
-                        <Form.Group
-                            isRequired label="content"
-                        />
-                        <Form.Input name="examplecontent" />
-                    </Form.FieldSet>
-                </div>
-                {this.renderSwitch()}
-
-                <div className='col'>
-                    <div className='card'>
-                        <table className="table card-table table-vcenter">
-                            <thead>
-                                <tr>
-                                    <td style={{width : '10%'}}>
-                                        작성자
-                                    </td>
-                                    <td>
-                                        댓글
-                                    </td>
-                                </tr>
-
-                            </thead>
-                            <tbody>
-                                {this.state.ListedComment}
-                            </tbody>
-                        </table>
+                <section style={container}>
+                    <div>
+                        <BCard>
+                            <BCard.Header as="h5" >{this.state.title} {this.state.author}</BCard.Header>
+                            <div><span id="imglist"></span></div>
+                            <BCard.Body>
+                                <BCard.Text>{this.state.content}</BCard.Text>
+                            </BCard.Body>
+                        </BCard>
                     </div>
-                </div>
-            </section>
+                    <div className='ComponentDemo'>
+
+                        {/* <Form.FieldSet>
+                            <Form.Group
+                                isRequired label="Author"
+                            />
+                            <Form.Input name="exampleauth" />
+                            <Form.Group
+                                isRequired label="content"
+                            />
+                            <Form.Input name="examplecontent" />
+                        </Form.FieldSet> */}
+                    </div>
+                    {this.renderSwitch()}
+
+                    <div className='col'>
+                        <div>
+                            {/* <Modal isOpen={this.state.modalState} onRequestClose={() => this.setState({modalState : false})} >
+                                asd
+                            </Modal> */}
+                            <BModal show={this.state.modalState} onHide={false} >
+                                <BModal.Header closeButton>
+                                    <BModal.Title>{this.state.modalCno}</BModal.Title>
+                                    <BModal.Title>title</BModal.Title>
+                                </BModal.Header>
+                                <BForm>
+                                    <BForm.Group className="mb">
+                                        <BForm.Label>address</BForm.Label>
+                                        <BForm.Control
+                                            type='text'
+                                            placeholder="okay"
+                                            onChange={e => this.setState({ modalContent: e.target.value })}
+                                            autoFocus />
+                                    </BForm.Group>
+                                </BForm>
+                                <BModal.Body>
+                                    hi
+                                </BModal.Body>
+                                <BModal.Footer>
+                                    <BButton variant="primary" onClick={this.editComment}>save</BButton>
+                                    <BButton variant="secondary" onClick={() => this.setState({ modalState: false })}>close</BButton>
+                                </BModal.Footer>
+                            </BModal>
+                        </div>
+                        <div className='card'>
+                            <table className="table card-table table-vcenter">
+                                <thead>
+                                    <tr>
+                                        <td style={{ width: '10%' }}>
+                                            작성자
+                                        </td>
+                                        <td>
+                                            댓글
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {this.state.ListedComment}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+                
             </div>
         )
     }
 
 }
+//Modal.setAppElement('#root')
 export default userBoardDetail;
