@@ -21,20 +21,36 @@ class userBoardList extends Component {
             appendBoardList: '',
             searchStatus: '',
             value : '',
+            beforeBoardStatus: '',
         }
-        this.onSearch = this.onSearch.bind(this);
+        //this.onSearch = this.onSearch.bind(this);
     }
 
     componentDidMount() {
         this.callBoardList()
     }
 
-    onSearchChange = (e) => {
+    onSearchChange = async (e) => {
         e.preventDefault();
         this.setState({searchStatus : e.target.value});
+        let search = this.state.searchStatus;
+        try{
+            if(search === ''){
+                this.callBoardList()
+            }
+            axios.get('/board/searchBoard',{
+                params : { keyword: this.state.searchStatus}
+            }).then(response => {
+ //               this.state({searchStatus})
+                console.log(response);
+                this.setState({appendBoardList : this.BoardListAppend(response)});
+            })
+        }catch(error){
+            console.log(error);
+        }
     }
 
-    onSearch = async (e) => {
+    /* onSearch = async (e) => {
         e.preventDefault();
         let search = this.state.searchStatus;
         alert('okas')
@@ -44,11 +60,12 @@ class userBoardList extends Component {
             }).then(response => {
  //               this.state({searchStatus})
                 console.log(response);
+                this.setState({appendBoardList : this.BoardListAppend(response)});
             })
         }catch(error){
             console.log(error);
         }
-    }
+    } */
 
     callBoardList = async () => {
         axios.get('/board/getList').then(response => {
@@ -166,10 +183,19 @@ class userBoardList extends Component {
                 </article> */}
                     <article>
                         <div style={{ backgroundColor: '#fff' }} >
-                            <div>
-                                <input type="text" value={this.state.searchStatus} onChange = {this.onSearchChange} />
-                                <button type="button" onClick={(e) => this.onSearch(e)} >search</button>
-                            <p>{this.state.searchStatus}</p>
+                            <div className='ComponentDemo' style={{position : 'relative', marginBottom : '10px'}}>
+                                <div className='example' style={{padding:'1.5rem',border : '1px solid', borderRadius : '3px 1.5px',fontSize : '0.9rem'}}>
+                                <div className='input-group' style={{position : 'relative' , display : 'flex' , flexWrap : 'wrap' , alignItems : 'stretch', width : '100%'}}>
+
+                                <select className='form-control custom-select' style={{height : '2.375rem' , borderTopRightRadius : '0' , borderBottomRightRadius : '0', position : 'relative' , flex : '1 1 auto' , width : '1%' , marginBottom : '0', backgroundSize : '8px 10px', verticalAlign : 'middle', color : '#495057' }}>
+                                    <option value='0'>제목/내용</option>
+                                    <option value='1'>제목</option>
+                                    <option value='2'>내용</option>
+                                </select>
+                                <input className='form-control' style={{position: 'relative', padding : '0.375rem 0.75rem', lineHeight : '1.6' , backgroundClip : 'padding-box', border : '1px solid'}} id="searchbar" type="text" value={this.state.searchStatus} onChange = {this.onSearchChange} />
+                                </div>
+                                </div>
+                                {/* <button type="button" onClick={(e) => this.onSearch(e)} >search</button> */}
                             </div>
                             <Table striped bordered hover>
                                 <thead>

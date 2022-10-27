@@ -114,6 +114,8 @@ public class BoardController {
         List<JSONObject> entities = new ArrayList<JSONObject>();
 
         HttpHeaders responseHeaders = new HttpHeaders();
+
+        int bid = mapper.lastinserterror();
         for (MultipartFile file : images) {
 
             JSONObject entity = new JSONObject();
@@ -122,7 +124,7 @@ public class BoardController {
 
             entity.put("filename", fileName);
 
-            mapper.postImage(fileName);
+            mapper.postImage(bid,fileName);
 
             entities.add(entity);
 

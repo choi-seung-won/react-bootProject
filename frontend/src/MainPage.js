@@ -10,8 +10,8 @@ import {format} from 'date-fns';
 const uploadfoldername = '/uploadStorage';
 //let imageList = [];
 let sample = [
-    { url: "/uploadStorage/2022/10/21/8ff99bfc-1508-4d32-8e94-a8f811517c1a_3pudgethecat-690x690.jpg" },
-    { url: "/uploadStorage/2022/10/21/878f91b5-c4ef-4650-8721-47e9fd20528b_1lilbub-690x690.jpg" }
+    { url: "/uploadStorage/2022/10/21/11111.jpg" },
+    { url: "/uploadStorage/2022/10/21/22222.jpg" }
 ];
 const container = {
     width: "100%",
@@ -23,8 +23,8 @@ const c3Style = {
 class mainPage extends Component {
     //historyclear
     constructor(props) {
-        sample = [{ url: "/uploadStorage/2022/10/21/8ff99bfc-1508-4d32-8e94-a8f811517c1a_3pudgethecat-690x690.jpg" },
-        { url: "/uploadStorage/2022/10/21/878f91b5-c4ef-4650-8721-47e9fd20528b_1lilbub-690x690.jpg" }];
+        sample = [{ url: "/uploadStorage/2022/10/21/11111.jpg" },
+        { url: "/uploadStorage/2022/10/21/22222.jpg" }];
         super(props);
         this.state = {
             randomBoardList : '',
@@ -68,7 +68,7 @@ class mainPage extends Component {
                                 title={data.title}
                                 description={data.content}
                                 authorName={data.reg_User}
-                                date="금일중"
+                                date={"Today"}
                                 iconName="chevrons-right"
                                 iconHref={'/Detail/'+ data.bid}
                             /> )
@@ -164,7 +164,7 @@ class mainPage extends Component {
 
     render() {
         return <div className='container' style={container}>
-            <div className='row row' style={{ marginTop: '5%' }}>
+            <div className='row' style={{ marginTop: '5%' ,marginLeft : '2%'}}>
                 <div className='col col-lg8 card'>
                     <div className='card-header' >
                         <h4 style={{ margin: '2.5%' }}>유저들에 의해 리뷰된 이미지들입니다.</h4>
@@ -180,7 +180,7 @@ class mainPage extends Component {
                 <div className='card' style={{ height: '600px' }}>
 
                     <div className='card-header'>
-                        <h3 className='card-title'>최근 주목되는 리뷰</h3>
+                        <h6 className='card-title'>최근 주목되는 리뷰</h6>
                     </div>
 
                     <div className='c3' style={c3Style}>
@@ -210,7 +210,9 @@ class mainPage extends Component {
                     </div>
                 </div>
                 <div id='temp' className='col col-md-7'>
-                    <h5>금일 업로드된 작성글.</h5>
+                    <div className='alert alert-primary'>
+                    <p>금일 업로드된 작성글 목록입니다. </p>
+                    </div>
                     {/* <div style={{ position: 'relative' }}>
 
                         <BlogCard

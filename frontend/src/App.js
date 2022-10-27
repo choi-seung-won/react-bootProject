@@ -30,6 +30,7 @@ import userBoardDetail from './userBoardDetail';
 
 //mainPage
 import mainPage from './MainPage';
+import Sidebar from './SideBar/SideBar.js';
 
 class App extends Component {
 constructor(props){
@@ -69,7 +70,9 @@ componentDidMount() {
 
 render () {
   return (
-    <div className="App">
+    <div className="App" style={{ height : "85vh"}}>
+      <div style={{height : 'auto', minHeight : '100%' , paddingBottom : '5%'}}>
+      <Sidebar />
       <HeaderAdmin />
               <Route exact path='/' component={mainPage} />
               <Route path='/Test' component={TestPage} />
@@ -78,7 +81,8 @@ render () {
               <Route path='/Create' component={userCreatePage} />
               <Route path='/ListAll' component={userBoardList} />
               <Route path='/Detail/:bid' component={userBoardDetail} />
-        <Footer/>
+      </div>
+              <Footer/>
     </div>
   );
 }

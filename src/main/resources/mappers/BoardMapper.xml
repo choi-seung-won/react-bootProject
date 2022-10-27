@@ -27,12 +27,12 @@ select * from userboard where bid = #{bid}
 <insert id="postImage">
 INSERT INTO react.filename_tbl
 (
-    bid,
-    filename
+    filename,
+    bid
 )
 values(
-    LAST_INSERT_ID(),
-    #{filename}
+    #{fileName},
+    #{bid}
 )
 </insert>
 <select id = "getAttach" resultType = "String" >
@@ -77,8 +77,13 @@ select *,date_format(userBoard.reg_Date,'%Y-%m-%d')as dform from userBoard where
 </select>
 
 <select id ="searchBoard" resultType = "com.project.backend.DTO.BoardDTO">
-<!-- <bind name="pattern" value="'%' + #{test} + '%'" />
- -->
  select * from userBoard where title Like '%${keyword}%'
 </select>
+
+<select id="lastinserterror" resultType = "int">
+select bid from userBoard order by bid desc limit 1;
+</select>
+<!-- <update id="lastinserterrorupdate">
+update filename_tbl set bid = #{bid} where bid 
+</update> -->
 </mapper>
