@@ -16,7 +16,7 @@ class Footer extends Component{
 
     render(){
 
-        return <div class="container" /* style={{backgroundcolor: '#242424',
+        return <div /* style={{backgroundcolor: '#242424',
             padding: '4rem 0 2rem 0',
             display: 'flex',
             flexdirection: 'column',

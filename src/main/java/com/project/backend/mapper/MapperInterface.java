@@ -33,7 +33,7 @@ public interface MapperInterface {
 
     public BoardDTO getDetail(int bid) throws Exception;
 
-    public void postImage(String fileName) throws Exception;
+    public void postImage(int bid , String fileName) throws Exception;
 
     public List<BoardDTO> listPage(Map<String,Object> paramMap) throws Exception;
 
@@ -56,4 +56,8 @@ public interface MapperInterface {
     public List<BoardDTO> selecttoptenBoard() throws Exception;
 
     public List<BoardDTO> dailyBoard() throws Exception;
+
+    public List<BoardDTO> searchBoard(String keyword) throws Exception;
+
+    public int lastinserterror() throws Exception;
  }

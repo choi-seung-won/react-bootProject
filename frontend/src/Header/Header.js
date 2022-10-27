@@ -8,7 +8,6 @@ import * as tabler from 'tabler-react';
 
 
 
-
 class Header extends Component {
     constructor(props) {
         super(props);
@@ -76,7 +75,6 @@ class Header extends Component {
     renderSwitch(username) {
         if(username === 'NotLogged'){
             return <tabler.AccountDropdown
-            avatarURL="./demo/faces/female/25.jpg"
             name={this.state.username}
             description="로그아웃 상태입니다."
             options={[
@@ -89,14 +87,13 @@ class Header extends Component {
         />;
         }else{
             return <tabler.AccountDropdown
-            avatarURL="./demo/faces/female/25.jpg"
             name={this.state.username}
-            description="Administrator"
+            description={sessionStorage.getItem('useremail')}
             options={[
                 { icon: "settings", value: "Settings", to: "/settings" },
                 "divider",
                 "help",
-                {icon: "log-out", value: "SignOut", to: "/logout" , onClick : this.logout},
+                {icon: "log-out", value: "SignOut", to: "/" , onClick : this.logout},
             ]}
         />;
         }
@@ -111,12 +108,13 @@ class Header extends Component {
         
         return (
             <header style={{marginBottom : "2.5%"}}>
-             <div class="header py-4"><div class="container"><div class="d-flex"><a class="header-brand" href="/"></a><div class="d-flex order-lg-2 ml-auto">
+                
+             <div class="header py-4"><img src='/homelogo.jpg' style={{width:'2%' , height : '2%',marginTop : '1%'}} /><div class="container"><div class="d-flex"><a class="header-brand" href="/"></a><div class="d-flex order-lg-2 ml-auto">
 
             {this.renderSwitch(this.state.username)}
                 
                 </div><a class="header-toggler d-lg-none ml-3 ml-lg-0"><span class="header-toggler-icon"></span></a></div></div></div>
-                <div className='header d-lg-flex p-0'>
+                <div className='header d-lg-flex p-0'>  
                     <div className='container'>
                         <div className='row row align-items-center'>
                             <div className='col-lg-3 ml-auto'></div>

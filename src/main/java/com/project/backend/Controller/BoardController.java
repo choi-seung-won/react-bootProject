@@ -114,6 +114,8 @@ public class BoardController {
         List<JSONObject> entities = new ArrayList<JSONObject>();
 
         HttpHeaders responseHeaders = new HttpHeaders();
+
+        int bid = mapper.lastinserterror();
         for (MultipartFile file : images) {
 
             JSONObject entity = new JSONObject();
@@ -122,7 +124,7 @@ public class BoardController {
 
             entity.put("filename", fileName);
 
-            mapper.postImage(fileName);
+            mapper.postImage(bid,fileName);
 
             entities.add(entity);
 
@@ -258,4 +260,20 @@ public class BoardController {
         return entity;
     }
     
+    @RequestMapping(value="/searchBoard",method = RequestMethod.GET)
+    public ResponseEntity<?> searchBoard(@RequestParam String keyword){
+        ResponseEntity<?> entity = null;
+
+        try{
+            List<BoardDTO> boarddto = mapper.searchBoard(keyword);
+            System.out.println(boarddto);
+            entity = new ResponseEntity<List<BoardDTO>>(boarddto,HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+            entity = new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+        }
+
+        return entity;
+    }
+
 }

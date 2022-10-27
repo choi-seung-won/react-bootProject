@@ -113,7 +113,6 @@ class userBoardDetail extends Component {
     deletefunction = (e) => {
         let cno = parseInt(e);
         parseInt(cno);
-        alert(cno)
         axios.delete('/board/deleteComment', {
             params: { cno: cno }
         }).then(
@@ -249,13 +248,13 @@ class userBoardDetail extends Component {
             return <div class="card"><div class="card-header"></div><div class="card-body"><div class="row row"></div><div class="form-group"><textarea class="form-control" rows="5" placeholder='notlogged'></textarea></div><div class="form-footer"><Link to='/login'><button class="btn btn-block btn-primary">코멘트 작성을 위해 로그인이 필요합니다.</button></Link></div></div></div>
         }
         else {
-            return <div class="card"><div class="card-header"><h3 class="card-title">My Profile</h3></div><div class="card-body"><div class="row row"><div class="col col-auto"><span class="avatar avatar-xl"></span></div><div class="col"><div class="form-group"><input class="form-control" type="text" placeholder={sessionStorage.getItem("username")} readOnly /></div></div></div><div class="form-group"><textarea id='commentarea' class="form-control" rows="5" placeholder='Comment'></textarea></div><div class="form-footer"><div class="btn btn-block btn-primary" onClick={this.onclickfunction}>등록</div></div></div></div>
+            return <div class="card"><div class="card-header"><h3 class="card-title">My Profile</h3></div><div class="card-body"><div class="row row"><div class="col col-auto"></div><div class="col"><div class="form-group"><input class="form-control" type="text" placeholder={sessionStorage.getItem("username")} readOnly /></div></div></div><div class="form-group"><textarea id='commentarea' class="form-control" rows="5" placeholder='Comment'></textarea></div><div class="form-footer"><div class="btn btn-block btn-primary" onClick={this.onclickfunction}>등록</div></div></div></div>
         }
     }
 
     render() {
         return (
-            <div className='page'>
+            <div>
             <div className='container' style={container}>
                 <section style={container}>
                     <div>

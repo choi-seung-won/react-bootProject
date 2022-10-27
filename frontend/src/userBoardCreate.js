@@ -181,6 +181,7 @@ class userBoardCreate extends Component {
                                 console.log(formData.length);
                             }
                             //axios.post양식문제있음
+                            //다량의데이터를 last_insert_id를 이용하여 삽입시 에러발생-처리안됨 
                             axios.post('/board/ImagePost', formData, {
                                 headers: { 'content-type': 'multipart/form-data' },
                             }).then(response => {
