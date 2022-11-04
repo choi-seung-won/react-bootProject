@@ -11,3 +11,12 @@ mysql Procedure or sequnce-like 구현(fileupload할당)
 
 
 https://stackoverflow.com/questions/12652899/difference-between-package-and-directory-in-java
+
+
+###
+migration plan
+
+1. function component로 교체
+2. search bar 전면수정
+3. spring security/jwt 인증 도입 및 필터적용
+4. ui수정

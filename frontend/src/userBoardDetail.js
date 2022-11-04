@@ -259,7 +259,7 @@ class userBoardDetail extends Component {
                 <section style={container}>
                     <div>
                         <BCard>
-                            <BCard.Header as="h5" >{this.state.title} {this.state.author}</BCard.Header>
+                            <BCard.Header as="h5" >{this.state.title}</BCard.Header>
                             <div><span id="imglist"></span></div>
                             <BCard.Body>
                                 <BCard.Text>{this.state.content}</BCard.Text>
